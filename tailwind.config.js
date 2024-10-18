@@ -7,7 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primaryColor: "#2F2FC8",
+        primaryColor: "#1D48E7",
+        brandLightBlue: "#ECF0FD",
+        brandDark: "#2C2C2C",
+        brandWhite: "#fff",
+        brandGray: "#A2A2A3",
+      },
+      boxShadow: {
+        'custom-xl': '0 10px 20px rgba(65, 101, 235, 0.8)',
       },
     },
   },
