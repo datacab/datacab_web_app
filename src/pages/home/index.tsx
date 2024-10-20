@@ -10,8 +10,18 @@ import EnvironmentalBlog from "./sections/blog";
 import Multimedia from "./sections/multimedia";
 import Donors from "./sections/donors";
 import RequestData from "./sections/request";
+import { useEffect } from "react";
 
 const Home = () => {
+  useEffect(() => {
+    // Check if the URL has the #about hash
+    if (window.location.hash === "#about") {
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
   return (
     <MainLayout>
       <Hero />

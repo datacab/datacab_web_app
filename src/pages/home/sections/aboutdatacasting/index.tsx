@@ -79,7 +79,7 @@ const AboutDataCasting = () => {
   };
 
   return (
-    <div id="about" className="pt-[40px] pb-[20px] lg:py-[80px]">
+    <section id="about" className="pt-[40px] pb-[20px] lg:py-[80px]">
       <div className="flex flex-col-reverse lg:flex-row justify-between items-center gap-[60px] lg:gap-[80px]">
         <div className="w-full lg:w-[50%] flex flex-col gap-[8px]">
           <h2
@@ -156,7 +156,7 @@ const AboutDataCasting = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
