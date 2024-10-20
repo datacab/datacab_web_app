@@ -31,17 +31,17 @@ const Hero = () => {
             reliable sources and real-time air quality monitoring.
           </h3>
 
-          <div className="flex items-center gap-[24px]">
-            <Link to="#">
+          <div className="flex ">
+            <Link to="/air-reading">
               <PrimaryBtn className="bg-primaryColor  h-[38px] lg:h-[48px] flex justify-center items-center text-brandWhite">
                 Check Air Quality
               </PrimaryBtn>
             </Link>
-            <Link to="#">
+            {/* <Link to="#">
               <PrimaryBtn className="text-brandWhite bg-brandDark  h-[38px] lg:h-[48px] flex justify-center items-center">
                 Check Air Spillage
               </PrimaryBtn>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </Container>

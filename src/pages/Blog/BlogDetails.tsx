@@ -162,7 +162,7 @@ const BlogDetails = () => {
                       {item.content}
                     </Paragraph>
                     <div className="flex items-center gap-x-[15px]">
-                      <div className="font-[14px] text-[#1D48E7]">
+                      <div className="text-[14px] text-[#1D48E7]">
                         Read more
                       </div>
                       <img src="/arrowRightUp.svg" alt="arrow right up" />

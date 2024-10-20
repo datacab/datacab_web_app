@@ -1,3 +1,4 @@
+import Spinner from "@components/spinner";
 import NotFound from "@pages/NotFound";
 import React, { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -7,6 +8,7 @@ const Multimedia = lazy(() => import("@pages/Multimedia"));
 const Blog = lazy(() => import("@pages/Blog"));
 const AirReading = lazy(() => import("@pages/AirReading"));
 const BlogDetails = lazy(() => import("@pages/Blog/BlogDetails"));
+const AirReadingDetails = lazy(() => import("@pages/AirReading/AirReadingDetails"));
 
 const AppRouter = () => {
   return (
@@ -15,7 +17,7 @@ const AppRouter = () => {
         <Route
           path="/"
           element={
-            <React.Suspense>
+            <React.Suspense fallback={<Spinner />}>
               {" "}
               <Home />
             </React.Suspense>
@@ -25,7 +27,7 @@ const AppRouter = () => {
         <Route
           path="/multimedia"
           element={
-            <React.Suspense>
+            <React.Suspense fallback={<Spinner />}>
               <Multimedia />
             </React.Suspense>
           }
@@ -33,7 +35,7 @@ const AppRouter = () => {
         <Route
           path="/blog"
           element={
-            <React.Suspense>
+            <React.Suspense fallback={<Spinner />}>
               <Blog />
             </React.Suspense>
           }
@@ -41,7 +43,7 @@ const AppRouter = () => {
         <Route
           path="/blog-details/:blogID"
           element={
-            <React.Suspense>
+            <React.Suspense fallback={<Spinner />}>
               <BlogDetails />
             </React.Suspense>
           }
@@ -49,8 +51,16 @@ const AppRouter = () => {
         <Route
           path="/air-reading"
           element={
-            <React.Suspense>
+            <React.Suspense fallback={<Spinner />}>
               <AirReading />
+            </React.Suspense>
+          }
+        />
+                <Route
+          path="/air-reading-details/:AQID"
+          element={
+            <React.Suspense fallback={<Spinner />}>
+              <AirReadingDetails />
             </React.Suspense>
           }
         />

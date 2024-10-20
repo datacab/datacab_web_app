@@ -4,7 +4,7 @@ import {
   FaGlobe,
   FaChartPie,
   FaMapMarkedAlt,
-} from "react-icons/fa"; // Example icons from react-icons
+} from "react-icons/fa";
 
 const services = [
   {
