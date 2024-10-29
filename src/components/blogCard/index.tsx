@@ -5,8 +5,8 @@ interface BlogData {
   id: string;
   title: string;
   content: string;
-  image: string;
-  updatedAt: string;
+  image?: string;
+  updatedAt?: string;
 }
 
 interface props {
@@ -15,6 +15,14 @@ interface props {
 }
 const BlogCard = ({ item, clickFN }: props) => {
   const { Title, Paragraph } = Typography;
+
+  const formattedDate = item.updatedAt
+    ? new Date(item.updatedAt).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "Date not available"; 
   return (
     <div
       key={item.id}
@@ -30,11 +38,12 @@ const BlogCard = ({ item, clickFN }: props) => {
       </div>
       <div className="flex items-center gap-x-[5px]">
         <IoCalendarOutline size={17.5} color="#757575" />
-        <div className="text-[#757575] text-[12px]">{item.updatedAt}</div>
+        <div className="text-[#757575] text-[12px]">{formattedDate}</div>
       </div>
       <Title
         style={{
           color: "#2C2C2C",
+          textTransform: "capitalize",
         }}
         ellipsis={{ rows: 1, expandable: false }}
         level={4}

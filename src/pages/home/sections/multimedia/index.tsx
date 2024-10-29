@@ -1,10 +1,11 @@
+import useMultimedia from "@hooks/useMultimedia";
 import { useState } from "react";
 import {
   IoIosArrowRoundForward,
   IoIosCloseCircleOutline,
 } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
-// Define props for the Modal component
 interface ModalProps {
   isOpen: boolean;
   image: string;
@@ -26,15 +27,49 @@ const Modal: React.FC<ModalProps> = ({ isOpen, image, onClose }) => {
     </div>
   );
 };
-
+ 
 const Multimedia = () => {
+  const nav = useNavigate();
+  const { multimediaDetails, loading } = useMultimedia();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+
+  const imagesPerPage = 8; 
+  const currentPage = 1; 
 
   const handleImageClick = (src: string) => {
     setSelectedImage(src);
     setModalOpen(true);
   };
+
+  const renderImages = (startIndex: number, endIndex: number) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {multimediaDetails.slice(startIndex, endIndex).map((item) => (
+        <div
+          className="rounded-[10px] overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+          key={item.id}
+        >
+          <img
+            src={item.media}
+            alt="multimedia-image"
+            className="cursor-pointer w-full h-[214px] rounded-[10px] object-cover transition-transform duration-200 hover:scale-105"
+            onClick={() =>
+              handleImageClick(
+                item.media ||
+                  "https://res.cloudinary.com/dxoalsdsh/image/upload/v1728349839/DataCab/Multimedia/rzmuennv5uwf6juiw3ff.png"
+              )
+            }
+          />
+        </div>
+      ))}
+    </div>
+  );
+
+  const startIndex = (currentPage - 1) * imagesPerPage;
+  const endIndex = Math.min(
+    startIndex + imagesPerPage,
+    multimediaDetails.length
+  );
 
   return (
     <div className="pt-[0px] pb-[40px] lg:pb-[80px]">
@@ -48,71 +83,33 @@ const Multimedia = () => {
         >
           Multimedia
         </h2>
-        <p className="flex items-center gap-2 text-[12px] lg:text-[16px] font-[600] cursor-pointer">
+        <button
+          onClick={() => nav("/multimedia")}
+          className="flex items-center gap-2 text-[12px] lg:text-[16px] font-[600] cursor-pointer"
+        >
           See all
           <IoIosArrowRoundForward />
-        </p>
-      </div>
-      <div>
-        <div className="flex gap-[10px] lg:gap-[20px]">
-          <div className="mt-[15px] lg:mt-[30px] lg:w-[50%]">
-            <img
-              src="/datamultimg.png"
-              alt=""
-              className="cursor-pointer"
-              onClick={() => handleImageClick("/datamultimg.png")}
-            />
-          </div>
-          <div className="flex lg:w-[50%] gap-[10px] lg:gap-[20px]">
-            <div className="mt-[15px] lg:mt-[30px]">
-              <img
-                src="/img2.png"
-                alt=""
-                className="cursor-pointer"
-                onClick={() => handleImageClick("/img2.png")}
-              />
-            </div>
-            <div className="mt-[15px] lg:mt-[30px]">
-              <img
-                src="/img2.png"
-                alt=""
-                className="cursor-pointer"
-                onClick={() => handleImageClick("/img2.png")}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex gap-[10px] lg:gap-[20px]">
-          <div className="flex lg:w-[50%] gap-[10px] lg:gap-[20px]">
-            <div className="mt-[15px] lg:mt-[30px]">
-              <img
-                src="/img2.png"
-                alt=""
-                className="cursor-pointer"
-                onClick={() => handleImageClick("/img2.png")}
-              />
-            </div>
-            <div className="mt-[15px] lg:mt-[30px]">
-              <img
-                src="/img2.png"
-                alt=""
-                className="cursor-pointer"
-                onClick={() => handleImageClick("/img2.png")}
-              />
-            </div>
-          </div>
-          <div className="mt-[15px] lg:mt-[30px] lg:w-[50%]">
-            <img
-              src="/datamultimg.png"
-              alt=""
-              className="cursor-pointer"
-              onClick={() => handleImageClick("/datamultimg.png")}
-            />
-          </div>
-        </div>
+        </button>
       </div>
 
-      {/* Modal for displaying the selected image */}
+      {loading ? (
+        <div className="my-[40px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[19px]">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div
+              key={index}
+              className="relative w-full h-[180px] flex flex-col gap-2"
+            >
+              <div className="absolute top-4 right-4 bg-gray-200 animate-pulse w-[26px] h-[26px] rounded-full"></div>
+              <div className="w-full h-[180px] bg-gray-200 animate-pulse rounded-[14px]"></div>
+            </div>
+          ))}
+        </div>
+      ) : multimediaDetails.length > 0 ? (
+        <div className="my-[40px]">{renderImages(startIndex, endIndex)}</div>
+      ) : (
+        <p>Content not available</p>
+      )}
+
       <Modal
         isOpen={isModalOpen}
         image={selectedImage}

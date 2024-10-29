@@ -1,20 +1,9 @@
 import Container from "@components/container";
+import useMultimedia from "@hooks/useMultimedia";
 import MainLayout from "@layouts/MainLayout";
 import { Pagination } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-
-interface MultimediaData {
-  id: string;
-  image: string;
-  image2: string;
-}
-
-const multimedia: MultimediaData[] = Array.from({ length: 36 }, (_, i) => ({
-  id: `${i}`,
-  image: "/datamultimg.png",
-  image2: "/img2.png",
-}));
 
 interface ModalProps {
   isOpen: boolean;
@@ -39,26 +28,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, image, onClose }) => {
 };
 
 const Multimedia = () => {
-  const [loadingImages, setLoadingImages] = useState<boolean>(true);
+  const { multimediaDetails, loading } = useMultimedia();
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
-  const imagesPerPage = 12;
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoadingImages(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  const imagesPerPage = 16;
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
   };
-
-  const currentMultimedia = multimedia.slice(
-    (currentPage - 1) * imagesPerPage,
-    currentPage * imagesPerPage
-  );
 
   const handleImageClick = (src: string) => {
     setSelectedImage(src);
@@ -66,25 +45,39 @@ const Multimedia = () => {
   };
 
   const renderImages = (startIndex: number, endIndex: number) => (
-    <div className="flex gap-[10px] lg:gap-[20px]">
-      {currentMultimedia.slice(startIndex, endIndex).map((item) => (
-        <div className="mt-[15px] lg:mt-[30px] lg:w-[50%]" key={item.id}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {multimediaDetails.slice(startIndex, endIndex).map((item) => (
+        <div
+          className="rounded-[10px] overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+          key={item.id}
+        >
           <img
-            src={item.image}
-            alt=""
-            className="cursor-pointer"
-            onClick={() => handleImageClick(item.image)}
+            src={item.media}
+            alt="multimedia-image"
+            className="cursor-pointer w-full h-[214px] rounded-[10px] object-cover transition-transform duration-200 hover:scale-105"
+            onClick={() =>
+              handleImageClick(
+                item.media ||
+                  "https://res.cloudinary.com/dxoalsdsh/image/upload/v1728349839/DataCab/Multimedia/rzmuennv5uwf6juiw3ff.png"
+              )
+            }
           />
         </div>
       ))}
     </div>
   );
 
+  const startIndex = (currentPage - 1) * imagesPerPage;
+  const endIndex = Math.min(
+    startIndex + imagesPerPage,
+    multimediaDetails.length
+  );
+
   return (
     <MainLayout>
       <Container>
         <div className="flex justify-center mt-[60px]">
-          <div className="w-[100%] ">
+          <div className="w-[100%]">
             <h1 className="font-[700] text-[32px] text-[#2C2C2C]">
               Multimedia
             </h1>
@@ -93,10 +86,9 @@ const Multimedia = () => {
               fostering grassroots participation in environmental protection.
             </p>
 
-            {/* Image loading or display section */}
-            {loadingImages ? (
-              <div className="my-[40px] grid grid-cols-3 gap-[19px]">
-                {Array.from({ length: 6 }).map((_, index) => (
+            {loading ? (
+              <div className="my-[40px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[19px]">
+                {Array.from({ length: imagesPerPage }).map((_, index) => (
                   <div
                     key={index}
                     className="relative w-full h-[180px] flex flex-col gap-2"
@@ -106,28 +98,23 @@ const Multimedia = () => {
                   </div>
                 ))}
               </div>
-            ) : currentMultimedia.length > 0 ? (
-              <div className="mb-[40px] ">
-                {renderImages(0, 2)}
-                {renderImages(2, 6)}
-                {renderImages(6, 8)}
-                {renderImages(8, 12)}
+            ) : multimediaDetails.length > 0 ? (
+              <div className="mb-[40px]">
+                {renderImages(startIndex, endIndex)}
               </div>
             ) : (
-              <p>NOTHING HERE FOR NOW</p>
+              <p>Content not available</p>
             )}
 
-            {/* Pagination */}
             <Pagination
               className="my-6 flex justify-end"
               current={currentPage}
               pageSize={imagesPerPage}
-              total={multimedia.length}
+              total={multimediaDetails.length}
               onChange={onPageChange}
             />
           </div>
 
-          {/* Modal for displaying the selected image */}
           <Modal
             isOpen={isModalOpen}
             image={selectedImage}

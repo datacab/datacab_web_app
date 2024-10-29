@@ -1,3 +1,5 @@
+import useContentDetails from "@hooks/useContentDetails";
+import { Spin } from "antd";
 import {
   FaChartBar,
   FaTemperatureHigh,
@@ -5,6 +7,7 @@ import {
   FaChartPie,
   FaMapMarkedAlt,
 } from "react-icons/fa";
+import { ExtractedContent } from "../../../../types/ExtractedContent";
 
 const services = [
   {
@@ -30,26 +33,60 @@ const services = [
 ];
 
 const WhatWeDo = () => {
+  const { contentDetails, loading } = useContentDetails();
+
+  // Filter content based on title and <h3> text within the content
+  const targetH3Text = "What We Do";
+  const specificContent = contentDetails.find(
+    (item) =>
+      item.title === "About Us" &&
+      item.content.includes(`<h2><strong>${targetH3Text}</strong></h2>`)
+  );
+
+  const extractContent = (content: string): ExtractedContent => {
+    // Match <h2> tag content
+    const h2Match = content?.match(/<h2[^>]*>(.*?)<\/h2>/);
+    const h2Text = h2Match
+      ? h2Match[1].replace(/<[^>]+>/g, "")
+      : "Default Title";
+
+    // Match all <p> tags and extract text within
+    const pMatches = content?.match(/<p>(.*?)<\/p>/g);
+    const pTexts = pMatches
+      ? pMatches?.map((p) => p.replace(/<p>|<\/p>/g, ""))
+      : [];
+
+    return { h2Text, pTexts };
+  };
+
+  const content = specificContent && specificContent?.content;
+  const extracted = extractContent(content || "");
   return (
     <div className="pt-[20px] pb-[40px] lg:py-[40px]">
       <div className="flex flex-col lg:flex-row justify-between items-center gap-[40px] lg:gap-[80px]">
         <div className="w-full lg:w-[50%] flex flex-col gap-[8px]">
-          <h2
-            style={{
-              fontFamily: "Merriweather",
-              fontWeight: 700,
-            }}
-            className="text-[20px] lg:text-[32px] lg:w-[379px] lg:leading-[38px]"
-          >
-            What We Do
-          </h2>
-          <h3 className="text-[16px] lg:text-[18px] font-[500] lg:leading-[28px]">
-            We transform complex environmental data into actionable insights,
-            providing tools for analysis, visualisation, and geospatial mapping.
-            Our goal is to empower communities with the information they need to
-            advocate for sustainable environmental solutions and climate change
-            adaptation.
-          </h3>
+          {loading ? (
+            <div className="flex justify-center items-center">
+              <Spin size="large" />
+            </div>
+          ) : specificContent ? (
+            <div className="w-full  flex flex-col gap-[8px]">
+              <h2
+                style={{ fontFamily: "Merriweather", fontWeight: 700 }}
+                className="text-[20px] lg:text-[32px] lg:w-[400px] lg:leading-[38px]"
+              >
+                {extracted.h2Text}
+              </h2>
+
+              <div className="text-[16px] lg:text-[18px] font-[500] lg:leading-[28px] flex flex-col gap-[8px]">
+                {extracted.pTexts.map((text, index) => (
+                  <p key={index}>{text}</p> // Render extracted p texts
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p>Content not available for the specified heading</p>
+          )}
         </div>
 
         <div className="w-full lg:w-[50%]">
