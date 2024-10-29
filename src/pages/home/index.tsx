@@ -14,7 +14,6 @@ import { useEffect } from "react";
 
 const Home = () => {
   useEffect(() => {
-    // Check if the URL has the #about hash
     if (window.location.hash === "#about") {
       const aboutSection = document.getElementById("about");
       if (aboutSection) {
