@@ -2,10 +2,11 @@ import MainLayout from "@layouts/MainLayout";
 import { Button, Input, Pagination } from "antd";
 import { IoSearch } from "react-icons/io5";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BlogCard from "@components/blogCard";
 import Container from "@components/container";
+import useBlog from "@hooks/useBlog";
 
 interface BlogData {
   id: string;
@@ -15,38 +16,13 @@ interface BlogData {
   updatedAt: string;
 }
 
-const blogs: BlogData[] = [
-  {
-    id: "0",
-    title: "How to Start a Blog (I Got 200+ Million Visitors)",
-    content:
-      "I should be dead.I was born with a fatal disease called Spinal Muscular Atrophy (SMA). I’m in a wheelchair, and I can’t move anything but my face.But I’m not dead. On the contrary, I’ve traveled all over the world and become a multimillionaire. Over 200 million people have read my work.How is that possible?I write with a speech dictation software called Dragon NaturallySpeaking. I also have a mouse I operate with my lips.With this set up, I’ve been blogging for 15 years.To make money, I sell books and courses. I have over 60,000 customers.And I’m freakishly good at what I do.",
-    image: "/blogImage.png",
-    updatedAt: `25 June. 2024`,
-  },
-];
-
-for (let i = 1; i < 30; i++) {
-  blogs.push({
-    id: `${i}`,
-    title: `Africa Internet Governance Forum Abuja ${i}`,
-    content:
-      "Identifying the Challenges of Digital Exclusion in Africa, innovations, recommendations and the Identifying the Challenges of Digital Exclusion in Africa, innovations, recommendations and the",
-    image: "/blogImage.png",
-    updatedAt: `${i} Sept. 2024`,
-  });
-}
 
 const Blog = () => {
+
+
+  const { blogDetails:blogs, loading } = useBlog();
   const navigate = useNavigate();
-  const [loadingImages, setLoadingImages] = useState<boolean>(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoadingImages(false), 2000);
-
-    // Cleanup the timer when the component unmounts
-    return () => clearTimeout(timer);
-  }, []);
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
@@ -72,6 +48,9 @@ const Blog = () => {
   const handleNavigate = (item: BlogData) => {
     navigate(`/blog-details/${item.id}`, { state: { item } });
   };
+
+
+
 
   // const { Title,Paragraph  } = Typography;
   return (
@@ -105,7 +84,7 @@ const Blog = () => {
 
             {/* BLOGS POSTS>>>>>>>>>>>>>>>>>>>>>> */}
 
-            {loadingImages === true ? (
+            {loading === true ? (
               <div className="my-[40px] grid grid-cols-3 gap-[19px]">
                 {Array.from({ length: imagesPerPage }).map((_, index) => (
                   <div
@@ -120,10 +99,19 @@ const Blog = () => {
                   </div>
                 ))}
               </div>
-            ) : currentBlogs.length > 0 ? (
+            ) :  currentBlogs && currentBlogs.length > 0 ? (
               <div className="my-[40px] grid grid-cols-1 gap-y-[30px] md:gap-[19px] md:grid-cols-2 xl:grid-cols-3">
-                {currentBlogs.map((item) => (
-                  <BlogCard item={item} clickFN={() => handleNavigate(item)} />
+                {currentBlogs.map((detail) => (
+                  <BlogCard 
+                  key={(detail as BlogData).id}
+                  item={
+                    {
+                      ...detail,
+                      content: detail.content.replace(/<[^>]*>/g, ""), // Strip HTML tags
+                    } as BlogData
+                  }
+                  clickFN={() => handleNavigate(detail as BlogData)}
+                  />
                 ))}
               </div>
             ) : (

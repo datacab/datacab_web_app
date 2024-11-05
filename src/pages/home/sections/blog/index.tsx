@@ -35,13 +35,15 @@ const EnvironmentalBlog = () => {
         >
           Environmental Blog
         </h2>
-        <p
-          onClick={HandleSeeAll}
-          className="flex items-center gap-2 text-[12px] lg:text-[16px] font-[600] cursor-pointer"
-        >
-          See all
-          <IoIosArrowRoundForward />
-        </p>
+        {blogDetails && blogDetails.length > 0 && (
+          <p
+            onClick={HandleSeeAll}
+            className="flex items-center gap-2 text-[12px] lg:text-[16px] font-[600] cursor-pointer"
+          >
+            See all
+            <IoIosArrowRoundForward />
+          </p>
+        )}
       </div>
       <div>
         {loading ? (
@@ -75,7 +77,7 @@ const EnvironmentalBlog = () => {
             ))}
           </div>
         ) : (
-          <p>Content not available</p>
+          <p className="text-[14px] text-center text-red-500">Content not available</p>
         )}
       </div>
     </div>
