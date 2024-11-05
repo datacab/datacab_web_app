@@ -5,7 +5,7 @@ interface AQIData {
     country: string;
     state: string;
     lga: string;
-    community: string;
+    city: string;
     AQI:string;
     pm_1:string;
     pm_2:string;
@@ -58,7 +58,7 @@ const AQ_Card = ({ item, clickFN }: props) => {
         ellipsis={{ rows: 1, expandable: false }}
         level={4}
       >
-        {item.community}&nbsp;Community
+        {item.city}&nbsp;Community
       </Title>
       <Title
         style={{
