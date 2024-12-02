@@ -1,26 +1,27 @@
+import { AMD_type_v2 } from "../../types/airMonitoring";
 import { Typography } from "antd";
 
-interface AQIData {
-    id: string;
-    country: string;
-    state: string;
-    lga: string;
-    city: string;
-    AQI:string;
-    pm_1:string;
-    pm_2:string;
-    pm10:string;
-    temp:string;
-    humidity:string;
-    heat:string;
-    voltage:string;
-    date:string;
+// interface AQIData {
+//     id: string;
+//     country: string;
+//     state: string;
+//     lga: string;
+//     city: string;
+//     AQI:string;
+//     pm_1:string;
+//     pm_2:string;
+//     pm10:string;
+//     temp:string;
+//     humidity:string;
+//     heat:string;
+//     voltage:string;
+//     date:string;
 
-  }
+//   }
 
 interface props {
-  item: AQIData;
-  clickFN: (item: AQIData) => void;
+  item: AMD_type_v2;
+  clickFN: (item: AMD_type_v2) => void;
 }
 const AQ_Card = ({ item, clickFN }: props) => {
   const { Title, Paragraph } = Typography;
@@ -31,15 +32,15 @@ const AQ_Card = ({ item, clickFN }: props) => {
       onClick={() => clickFN(item)}
     >
    
-  <div className="w-[30%]">
+  <div className="w-[20%]">
   <img
           src="/pin_location.svg"
           alt="uploaded image"
-          className="w-[80px] h-[80px] rounded-[14px] object-cover"
+          className="w-[70px] h-[70px] rounded-[14px] object-cover"
         />
   </div>
     
-<div className="w-[70%]">
+<div className="w-[80%]">
 <Paragraph
         style={{
           color: "#757575",
@@ -47,7 +48,7 @@ const AQ_Card = ({ item, clickFN }: props) => {
         }}
         ellipsis={{ rows: 1, expandable: false }}
       >
-        {item.state}&nbsp;State,&nbsp;{item.country}
+        {item.serial_number}
       </Paragraph>
       <Title
         style={{
@@ -58,19 +59,9 @@ const AQ_Card = ({ item, clickFN }: props) => {
         ellipsis={{ rows: 1, expandable: false }}
         level={4}
       >
-        {item.city}&nbsp;Community
+        {item.location}
       </Title>
-      <Title
-        style={{
-          color: "#2C2C2C",
-          marginTop:-14,
-      
-        }}
-        ellipsis={{ rows: 1, expandable: false }}
-        level={4}
-      >
-        {item.lga}
-      </Title>
+   
 </div>
 
   

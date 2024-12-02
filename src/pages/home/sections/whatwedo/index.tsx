@@ -85,7 +85,7 @@ const WhatWeDo = () => {
               </div>
             </div>
           ) : (
-            <p>Content not available for the specified heading</p>
+            <p>Content not available</p>
           )}
         </div>
 

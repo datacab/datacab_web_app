@@ -1,9 +1,9 @@
 import Container from "@components/container";
 import MainLayout from "@layouts/MainLayout";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MapHighlights from "./map";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import { Divider } from "antd";
+import { Button, Divider } from "antd";
 import { useState } from "react";
 import { GaugeComponent } from "react-gauge-component";
 import Select from "@components/select/Select";
@@ -21,7 +21,9 @@ import {
   ResponsiveContainer,
   Rectangle,
 } from "recharts";
+import { IoArrowBackOutline } from "react-icons/io5";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomBar = (props: any) => {
   const { x, y, width, height, fill } = props;
   return <Rectangle x={x} y={y} width={width} height={height} fill={fill} />;
@@ -44,27 +46,24 @@ const AirReadingDetails = () => {
     { name: "Point 12", lineValue: 95 },
   ];
 
-
-
   const data2 = [
-    { name: 'Point 1', lineValue1: 10, lineValue2: 30, lineValue3: 50 },
-    { name: 'Point 2', lineValue1: 20, lineValue2: 20, lineValue3: 40 },
-    { name: 'Point 3', lineValue1: 10, lineValue2: 25, lineValue3: 30 },
-    { name: 'Point 4', lineValue1: 30, lineValue2: 15, lineValue3: 50 },
-    { name: 'Point 5', lineValue1: 15, lineValue2: 35, lineValue3: 20 },
-    { name: 'Point 6', lineValue1: 25, lineValue2: 10, lineValue3: 40 },
-    { name: 'Point 7', lineValue1: 10, lineValue2: 20, lineValue3: 30 },
-    { name: 'Point 8', lineValue1: 35, lineValue2: 5, lineValue3: 55 },
-    { name: 'Point 9', lineValue1: 20, lineValue2: 30, lineValue3: 10 },
-    { name: 'Point 10', lineValue1: 5, lineValue2: 25, lineValue3: 35 },
-    { name: 'Point 11', lineValue1: 30, lineValue2: 15, lineValue3: 45 },
-    { name: 'Point 12', lineValue1: 15, lineValue2: 40, lineValue3: 20 },
+    { name: "Point 1", lineValue1: 10, lineValue2: 30, lineValue3: 50 },
+    { name: "Point 2", lineValue1: 20, lineValue2: 20, lineValue3: 40 },
+    { name: "Point 3", lineValue1: 10, lineValue2: 25, lineValue3: 30 },
+    { name: "Point 4", lineValue1: 30, lineValue2: 15, lineValue3: 50 },
+    { name: "Point 5", lineValue1: 15, lineValue2: 35, lineValue3: 20 },
+    { name: "Point 6", lineValue1: 25, lineValue2: 10, lineValue3: 40 },
+    { name: "Point 7", lineValue1: 10, lineValue2: 20, lineValue3: 30 },
+    { name: "Point 8", lineValue1: 35, lineValue2: 5, lineValue3: 55 },
+    { name: "Point 9", lineValue1: 20, lineValue2: 30, lineValue3: 10 },
+    { name: "Point 10", lineValue1: 5, lineValue2: 25, lineValue3: 35 },
+    { name: "Point 11", lineValue1: 30, lineValue2: 15, lineValue3: 45 },
+    { name: "Point 12", lineValue1: 15, lineValue2: 40, lineValue3: 20 },
   ];
-
-
 
   const location = useLocation();
   const { item } = location.state || {};
+  console.log("item", item);
 
   const colorRange = [
     {
@@ -110,6 +109,7 @@ const AirReadingDetails = () => {
       info: "",
     },
   ];
+
   const atmos = [
     {
       text: "Humidity",
@@ -224,6 +224,7 @@ const AirReadingDetails = () => {
       month: "November",
     },
   ];
+
   const pm25 = [
     {
       value: "11",
@@ -268,6 +269,7 @@ const AirReadingDetails = () => {
       month: "November",
     },
   ];
+
   const pm10 = [
     {
       value: "10",
@@ -366,11 +368,27 @@ const AirReadingDetails = () => {
   return (
     <MainLayout>
       <Container>
-        <div className="text-[24px] md:text-[32px] font-[700] text-[#2C2C2C] mt-[60px]">
-          Air Quality in {item.community}
-        </div>
-        <div className="text-[24px] md:text-[32px] font-[700] text-[#2C2C2C]">
-          {item.lga}&nbsp;LGA,&nbsp; {item.state}
+        <div className="flex flex-col lg:flex-row justify-between lg:items-end mt-[60px]">
+          <div className="flex flex-col gap-2 text-[24px] md:text-[32px] font-[700] text-[#2C2C2C] ">
+            <Link to="/air-reading" className="w-[50px]   ">
+              <IoArrowBackOutline size={20} />
+            </Link>
+            Air Quality in {item.serial_number}
+          </div>
+
+          <Button
+            className="h-[46px] w-[30%] lg:w-auto bg-transparent mt-5 lg:mt-0"
+            // onClick={showModal}
+            icon={
+              <img
+                src="/download.svg"
+                alt="image"
+                className="w-[17.5px] h-[17.5px] "
+              />
+            }
+          >
+            Download
+          </Button>
         </div>
 
         <div className="rounded-[20px] shadow-md w-full p-[20px] lg:p-[40px] mt-[50px]">
@@ -579,11 +597,8 @@ const AirReadingDetails = () => {
 
           <div className="xl:grid xl:grid-cols-2 xl:gap-[20px]">
             <div className="mb-[20px] xl:mb-[unset] md:flex w-full  bg-[#FDFDFD] border-[0.5px] border-[#E6E6E6] rounded-[10px] px-[24px] py-[28px] text-[14px] h-[400px]">
-            <ResponsiveContainer width="100%" height={350}>
-                <ComposedChart
-                  data={data}
-                  margin={{  left: -30, }}
-                >
+              <ResponsiveContainer width="100%" height={350}>
+                <ComposedChart data={data} margin={{ left: -30 }}>
                   <CartesianGrid stroke="#f5f5f5" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -594,6 +609,7 @@ const AirReadingDetails = () => {
                   <Bar
                     dataKey="barValue"
                     fill="#fce9b2"
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     shape={(props: any) => {
                       const { index } = props; // Access the current index
                       const barWidth = data[index]?.barWidth || 20; // Get the custom width or use a default value
@@ -621,11 +637,8 @@ const AirReadingDetails = () => {
               </ResponsiveContainer>
             </div>
             <div className="mb-[20px] xl:mb-[unset] md:flex w-full  bg-[#FDFDFD] border-[0.5px] border-[#E6E6E6] rounded-[10px] px-[24px] py-[28px] text-[14px] h-[400px]">
-            <ResponsiveContainer width="100%" height={350}>
-                <ComposedChart
-                  data={data}
-                  margin={{  left: -30, }}
-                >
+              <ResponsiveContainer width="100%" height={350}>
+                <ComposedChart data={data} margin={{ left: -30 }}>
                   <CartesianGrid stroke="#f5f5f5" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -663,12 +676,8 @@ const AirReadingDetails = () => {
               </ResponsiveContainer>
             </div>
             <div className="mb-[20px] xl:mb-[unset] md:flex w-full  bg-[#FDFDFD] border-[0.5px] border-[#E6E6E6] rounded-[10px] px-[24px] py-[28px] text-[14px] h-[400px]">
-
-            <ResponsiveContainer width="100%" height={350}>
-                <ComposedChart
-                  data={data}
-                  margin={{  left: -30, }}
-                >
+              <ResponsiveContainer width="100%" height={350}>
+                <ComposedChart data={data} margin={{ left: -30 }}>
                   <CartesianGrid stroke="#f5f5f5" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -706,11 +715,8 @@ const AirReadingDetails = () => {
               </ResponsiveContainer>
             </div>
             <div className="mb-[20px] xl:mb-[unset] md:flex w-full  bg-[#FDFDFD] border-[0.5px] border-[#E6E6E6] rounded-[10px] px-[24px] py-[28px] text-[14px] h-[400px]">
-            <ResponsiveContainer width="100%" height={350}>
-                <ComposedChart
-                  data={data}
-                  margin={{  left: -30, }}
-                >
+              <ResponsiveContainer width="100%" height={350}>
+                <ComposedChart data={data} margin={{ left: -30 }}>
                   <CartesianGrid stroke="#f5f5f5" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -750,45 +756,39 @@ const AirReadingDetails = () => {
           </div>
           <div className="mt-[20px]">
             <div className="mb-[20px] xl:mb-[unset] md:flex w-full  bg-[#FDFDFD] border-[0.5px] border-[#E6E6E6] rounded-[10px] px-[24px] py-[28px] text-[14px] h-[400px]">
-            <ResponsiveContainer width="100%" height={350} >
-  <ComposedChart
-    data={data2}
-    margin={{ left: -30,  }}
-  >
-    <CartesianGrid stroke="#f5f5f5" />
-    <XAxis dataKey="name" />
-    <YAxis />
-    <Tooltip />
-    <Legend />
+              <ResponsiveContainer width="100%" height={350}>
+                <ComposedChart data={data2} margin={{ left: -30 }}>
+                  <CartesianGrid stroke="#f5f5f5" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
 
-    {/* First Line */}
-    <Line
-      type="linear"
-      dataKey="lineValue1"
-      stroke="#b1cd99"
-      strokeWidth={2}
-    />
+                  {/* First Line */}
+                  <Line
+                    type="linear"
+                    dataKey="lineValue1"
+                    stroke="#b1cd99"
+                    strokeWidth={2}
+                  />
 
-    {/* Second Line */}
-    <Line
-      type="linear"
-      dataKey="lineValue2"
-      stroke="#83a1c4"
-      strokeWidth={2}
-    />
+                  {/* Second Line */}
+                  <Line
+                    type="linear"
+                    dataKey="lineValue2"
+                    stroke="#83a1c4"
+                    strokeWidth={2}
+                  />
 
-    {/* Third Line */}
-    <Line
-      type="linear"
-      dataKey="lineValue3"
-      stroke="#ff8563"
-      strokeWidth={2}
-    />
-  </ComposedChart>
-</ResponsiveContainer>
-
- 
-
+                  {/* Third Line */}
+                  <Line
+                    type="linear"
+                    dataKey="lineValue3"
+                    stroke="#ff8563"
+                    strokeWidth={2}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>

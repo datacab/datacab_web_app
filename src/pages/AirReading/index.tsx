@@ -1,16 +1,20 @@
 import MainLayout from "@layouts/MainLayout";
-import { Button, Divider, Input, Pagination, Tooltip } from "antd";
+import { Button, Divider, Input, Pagination } from "antd";
 import { IoSearch } from "react-icons/io5";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AQ_Card from "@components/AQ_card";
-import MapHighlights from "./map";
+// import MapHighlights from "./map";
 import Container from "@components/container";
 import Donors from "@pages/home/sections/donors";
 import Select_v2 from "@components/select/Select_v2";
-import { AQIData } from "../../types/airMonitoring";
+import { AMD_type, AMD_type_v2 } from "../../types/airMonitoring";
 import useAqtStore from "@store/airReading";
+import { MdClear } from "react-icons/md";
+import { BASE_URL } from "@api/index";
+import { useQuery } from "@tanstack/react-query";
+import MapHighlights from "@pages/home/sections/map";
 
 interface SelectOption {
   value: string;
@@ -18,76 +22,53 @@ interface SelectOption {
   key: string;
 }
 
-const AQI_datas: AQIData[] = [
-  {
-    id: `0`,
-    country: `Botzwana`,
-    state: `West Central Botzwana`,
-    lga: `Ghanzi`,
-    city: `Ghanzi`,
-    AQI: `65`,
-    pm_1: `11`,
-    pm_2: `18`,
-    pm10: `18`,
-    temp: `26`,
-    humidity: `83`,
-    heat: `26`,
-    voltage: `3.9`,
-    date: "October 08 2024 at 12:50 pm",
-  },
-];
-
-for (let i = 1; i < 30; i++) {
-  AQI_datas.push({
-    id: `${i}`,
-    country: `Botzwana ${i}`,
-    state: `West Central Botzwana ${i}`,
-    lga: `Ghanzi ${i}`,
-    city: `Ghanzi ${i}`,
-    AQI: `65${+i}`,
-    pm_1: `11${+i}`,
-    pm_2: `18${+i}`,
-    pm10: `18${+i}`,
-    temp: `26${+i}`,
-    humidity: `83${+i}`,
-    heat: `26${+i}`,
-    voltage: `3.9${+i}`,
-    date: `October 08 2024 at 12:${i} pm`,
-  });
-}
-
 interface FilterValues {
-  country: string | null;
-  state: string | null;
-  lga: string | null;
-  city: string | null;
+  community: string | null;
+  location: string | null;
 }
 
 const AirReading = () => {
-  //
+  const fetch_air_reading_data = async () => {
+    const response = await fetch(`${BASE_URL}/air-monitoring`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Network response was not ok");
+    }
+
+    return response.json();
+  };
+
+  const { isLoading, data } = useQuery<AMD_type>({
+    queryKey: ["get_all_air_reading_data"],
+    queryFn: fetch_air_reading_data,
+  });
+
   const aqt_data = useAqtStore((state) => state.AQI_datas);
   const set_aqt_data = useAqtStore((state) => state.set_AQI_datas);
 
-
-
-
-  const [filteredItems, setFilteredItems] = useState<AQIData[]>([]);
-  const [loadinglgas, setLoadinglgas] = useState<boolean>(true);
+  const [filteredItems, setFilteredItems] = useState<AMD_type_v2[] | undefined>(
+    []
+  );
+  // const [loadinglgas, setLoadinglgas] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  
+
   // Initial data setup
   useEffect(() => {
-    set_aqt_data(AQI_datas);
-    setFilteredItems(AQI_datas);
+    set_aqt_data(data?.data);
+    setFilteredItems(data?.data);
   }, []);
 
-
-
-  const [countryOptions, setCountryOptions] = useState<SelectOption[]>([]);
-  const [stateOptions, setStateOptions] = useState<SelectOption[]>([]);
-  const [lgaOptions, setLgaOptions] = useState<SelectOption[]>([]);
-  const [cityOptions, setCityOptions] = useState<SelectOption[]>([]);
+  // const [countryOptions, setCountryOptions] = useState<SelectOption[]>([]);
+  const [communityOption, setCommunityOption] = useState<SelectOption[]>([]);
+  const [locationOption, setLocationOption] = useState<SelectOption[]>([]);
+  // const [cityOptions, setCityOptions] = useState<SelectOption[]>([]);
 
   const [isFilterActive, setIsFilterActive] = useState<boolean>(false);
   const [filter_input_values, set_filter_input_values] =
@@ -95,27 +76,35 @@ const AirReading = () => {
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const [showFilter_v2, setShowFilter_v2] = useState<boolean>(true);
   const [filterValues, setFilterValues] = useState<FilterValues>({
-    country: null,
-    state: null,
-    lga: null,
-    city: null,
+    community: null,
+    location: null,
   });
-
   const generateFilterOptions = () => {
-    const uniqueOptions = (field: keyof (typeof aqt_data)[0]) => {
-      return Array.from(new Set(aqt_data.map((item) => item[field]))).map(
-        (value, key) => ({
-          value: value,
-          label: value,
-          key: key.toString(),
+    // First, ensure aqt_data is not undefined
+    if (!aqt_data) return;
+
+    // Process the data with a proper type
+    const processedData = aqt_data.map((data) => ({
+      ...data,
+      community: data.serial_number,
+      location: data.location,
+    }));
+
+    // Create a type-safe unique options generator
+    const uniqueOptions = <K extends keyof (typeof processedData)[number]>(
+      field: K
+    ) => {
+      return Array.from(new Set(processedData.map((item) => item[field]))).map(
+        (value, index) => ({
+          value: value as string,
+          label: value as string,
+          key: index.toString(),
         })
       );
     };
 
-    setCountryOptions(uniqueOptions("country"));
-    setStateOptions(uniqueOptions("state"));
-    setLgaOptions(uniqueOptions("lga"));
-    setCityOptions(uniqueOptions("city"));
+    setCommunityOption(uniqueOptions("community"));
+    setLocationOption(uniqueOptions("location"));
   };
 
   useEffect(() => {
@@ -123,7 +112,14 @@ const AirReading = () => {
       generateFilterOptions();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showFilter, aqt_data]);
+  }, [showFilter, filteredItems]);
+
+  // useEffect(() => {
+  //   if (showFilter) {
+  //     generateFilterOptions();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [showFilter, aqt_data]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFilterChange = (value: any, field: keyof FilterValues) => {
@@ -133,37 +129,28 @@ const AirReading = () => {
       [field]: value,
     }));
   };
- 
-  const applyFilter = () => {
-    const filtered = aqt_data.filter((item) => {
-      const countryMatch =
-        !filterValues.country || item.country === filterValues.country;
-      const stateMatch =
-        !filterValues.state || item.state === filterValues.state;
-      const lgaMatch = !filterValues.lga || item.lga === filterValues.lga;
-      const cityMatch = !filterValues.city || item.city === filterValues.city;
 
-      
-      return countryMatch && stateMatch && lgaMatch && cityMatch;
+  const applyFilter = () => {
+    const filtered = aqt_data?.filter((item) => {
+      const communityMatch =
+        !filterValues.community ||
+        item.serial_number === filterValues.community;
+      const locationMatch =
+        !filterValues.location || item.location === filterValues.location;
+
+      return communityMatch && locationMatch;
     });
 
     setFilteredItems(filtered);
     setCurrentPage(1); // Reset to first page after filtering
     setShowFilter(false);
     setIsFilterActive(true);
-
-  }
-
-
-
-
+  };
 
   const clearFilter = () => {
     setFilterValues({
-      country: null,
-      state: null,
-      lga: null,
-      city: null,
+      community: null,
+      location: null,
     });
     setFilteredItems(aqt_data);
     setShowFilter_v2(false);
@@ -177,7 +164,6 @@ const AirReading = () => {
     clearFilter();
   }, []);
 
-
   // useEffect(() => {
   //   const timer = setTimeout(() => setLoadinglgas(false), 2000);
   //   return () => clearTimeout(timer);
@@ -185,29 +171,25 @@ const AirReading = () => {
 
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoadinglgas(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoadinglgas(false), 2000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
   };
-
 
   useEffect(() => {
     let result = aqt_data;
 
     // Apply search query
     if (searchQuery) {
-      result = result.filter((AQI_data) => {
+      result = result?.filter((AQI_data) => {
         const searchLower = searchQuery.toLowerCase();
         return (
-          AQI_data.country.toLowerCase().includes(searchLower) ||
-          AQI_data.state.toLowerCase().includes(searchLower) ||
-          AQI_data.city.toLowerCase().includes(searchLower) ||
-          AQI_data.lga.toLowerCase().includes(searchLower)
+          AQI_data.location.toLowerCase().includes(searchLower) ||
+          AQI_data.serial_number.toLowerCase().includes(searchLower)
         );
       });
     }
@@ -216,31 +198,27 @@ const AirReading = () => {
     setCurrentPage(1);
   }, [searchQuery, aqt_data]);
 
+  const dataPerPage = 9;
 
-
-
-
-  const lgasPerPage = 9;
-
-  const currentItems= filteredItems.slice(
-      (currentPage - 1) * lgasPerPage,
-      currentPage * lgasPerPage
-  )
+  // const currentItems = aqt_data?.slice(
+  //   (currentPage - 1) * dataPerPage,
+  //   currentPage * dataPerPage
+  // );
+  const currentItems = filteredItems?.slice(
+    (currentPage - 1) * dataPerPage,
+    currentPage * dataPerPage
+  );
 
   // const currentItems = the_FilteredData.length >0 ? the_FilteredData.slice(
-  //   (currentPage - 1) * lgasPerPage,
-  //   currentPage * lgasPerPage)
+  //   (currentPage - 1) * dataPerPage,
+  //   currentPage * dataPerPage)
   //   :
   //   filteredItems.slice(
-  //     (currentPage - 1) * lgasPerPage,
-  //     currentPage * lgasPerPage
+  //     (currentPage - 1) * dataPerPage,
+  //     currentPage * dataPerPage
   // )
 
-
-
- 
-
-  const handleNavigate = (item: AQIData) => {
+  const handleNavigate = (item: AMD_type_v2) => {
     navigate(`/air-reading-details/${item.id}`, { state: { item } });
   };
 
@@ -259,21 +237,27 @@ const AirReading = () => {
 
             {/* <div className="flex justify-between items-center"> */}
             <div className="flex gap-x-[16px] items-center">
-              <Input
-                placeholder="Search for data... "
-                prefix={<IoSearch size={17.5} />}
-                className="h-[46px] w-[323px] bg-transparent"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-
-              {/* <Button
-                type="primary"
-                onClick={handleUploadClick}
-                className="w-[200px] h-[48px] text-[16px] font-[400] bg-BrandPrimary"
-              >
-                <div className="text-[16px] font-[400]">Search</div>
-              </Button> */}
+              <div className="relative">
+                <Input
+                  placeholder="Search for data... "
+                  prefix={<IoSearch size={17.5} />}
+                  className="w-[250px] h-[46px] lg:w-[323px] bg-transparent"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery.length > 0 ? (
+                  <div
+                    className="absolute right-[5px] top-[20%] z-[500] cursor-pointer"
+                    onClick={() => {
+                      setSearchQuery("");
+                    }}
+                  >
+                    <MdClear color="red" size={30} />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
 
               <Button
                 className={`h-[46px] w-[18%  ${
@@ -300,36 +284,45 @@ const AirReading = () => {
             <div className="mt-[16px] relative">
               {showFilter_v2 && (
                 <div
-                  className={`absolute  w-full h-fit z-[999] px-[25px] bg-white ${
+                  className={`shadow-md rounded-md absolute  w-full h-fit z-[999] px-[25px] bg-white ${
                     showFilter === true ? "block" : "hidden"
                   }`}
                 >
-                  <div className="flex gap-x-[20px]  mt-[20px]">
-                    <div className="lg:w-[20%] ">
+                  <div className="lg:flex gap-x-[20px]  mt-[20px]">
+                    {/* <div className="lg:w-[25%] ">
                       <Select_v2
                         name="country"
                         label="Country"
                         placeholder="Select country"
                         required={false}
-                        options={countryOptions}
+                        options={[
+                          {
+                            value: "Nigeria",
+                            label: "Nigeria",
+                            key: "Nigeria",
+                          },
+                        ]}
+                        // options={countryOptions}
                         value={filterValues.country || undefined}
                         onChange={(value) =>
                           handleFilterChange(value, "country")
                         }
                       />
-                    </div>
-                    <div className="lg:w-[20%] ">
+                    </div> */}
+                    <div className="lg:w-[25%] ">
                       <Select_v2
-                        name="state"
-                        label="State"
-                        placeholder="Select state"
+                        name="location"
+                        label="Location"
+                        placeholder="Select location"
                         required={false}
-                        options={stateOptions}
-                        value={filterValues.state || undefined}
-                        onChange={(value) => handleFilterChange(value, "state")}
+                        options={locationOption}
+                        value={filterValues.location || undefined}
+                        onChange={(value) =>
+                          handleFilterChange(value, "location")
+                        }
                       />
                     </div>
-                    <div className="lg:w-[20%] ">
+                    {/* <div className="lg:w-[25%] ">
                       <Select_v2
                         name="lga"
                         label="L.G.A"
@@ -339,16 +332,18 @@ const AirReading = () => {
                         value={filterValues.lga || undefined}
                         onChange={(value) => handleFilterChange(value, "lga")}
                       />
-                    </div>
-                    <div className="lg:w-[20%] ">
+                    </div> */}
+                    <div className="lg:w-[25%] ">
                       <Select_v2
-                        name="city"
+                        name="community"
                         label="Community"
                         required={false}
                         placeholder="Select city"
-                        options={cityOptions}
-                        value={filterValues.city || undefined}
-                        onChange={(value) => handleFilterChange(value, "city")}
+                        options={communityOption}
+                        value={filterValues.community || undefined}
+                        onChange={(value) =>
+                          handleFilterChange(value, "community")
+                        }
                       />
                     </div>
                   </div>
@@ -361,23 +356,18 @@ const AirReading = () => {
                     >
                       Cancel
                     </Button>
-                    <Tooltip
-                      title={isFilterActive ? "Cancel existing filter" : ""}
+
+                    <Button
+                      disabled={filter_input_values ? false : true}
+                      // disabled={
+                      //   isFilterActive ? true : filter_input_values ? false : true
+                      // }
+                      type="primary"
+                      onClick={applyFilter}
+                      className="w-[234px] h-[48px] text-[16px] font-[400]  bg-BrandPrimary"
                     >
-                      <Button
-                        disabled={filter_input_values ? false : true}
-                        // disabled={
-                        //   isFilterActive ? true : filter_input_values ? false : true
-                        // }
-                        type="primary"
-                        onClick={applyFilter}
-                        className="w-[234px] h-[48px] text-[16px] font-[400]  bg-BrandPrimary"
-                      >
-                        <div className="text-[16px] font-[400]">
-                          Apply Filter
-                        </div>
-                      </Button>
-                    </Tooltip>
+                      <div className="text-[16px] font-[400]">Apply Filter</div>
+                    </Button>
                   </div>
                 </div>
               )}
@@ -385,9 +375,9 @@ const AirReading = () => {
 
             {/* AIR READING POSTS>>>>>>>>>>>>>>>>>>>>>> */}
 
-            {loadinglgas === true ? (
+            {isLoading === true ? (
               <div className="my-[40px] grid grid-cols-3 gap-[19px]">
-                {Array.from({ length: lgasPerPage }).map((_, index) => (
+                {Array.from({ length: dataPerPage }).map((_, index) => (
                   <div
                     key={index}
                     className="relative w-full h-[180px] flex flex-col gap-2"
@@ -400,55 +390,40 @@ const AirReading = () => {
                   </div>
                 ))}
               </div>
-            ) : currentItems.length > 0 ? (
+            ) : currentItems?.length !== 0 ? (
               <div className="my-[40px] grid grid-cols-1 gap-y-[30px] md:gap-[19px] md:grid-cols-2 xl:grid-cols-3">
-                {currentItems.map((item) => (
+                {currentItems?.map((item) => (
                   <AQ_Card item={item} clickFN={() => handleNavigate(item)} />
                 ))}
               </div>
             ) : (
-              <p> NOTHING HERE FOR NOW</p>
+              <p className="text-[14px] font-bold"> Not found</p>
             )}
-
-            <Pagination
-              className="my-6 flex justify-end"
-              current={currentPage}
-              pageSize={lgasPerPage}
-              total={AQI_datas.length}
-              onChange={onPageChange}
-            />
+            {currentItems?.length !== 0 ? (
+              <Pagination
+                className="my-6 flex justify-end"
+                current={currentPage}
+                pageSize={dataPerPage}
+                total={aqt_data?.length}
+                // total={AQI_datas.length}
+                onChange={onPageChange}
+              />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </Container>
 
-      <div className="my-[40px]">
-        <MapHighlights />
-      </div>
+      {isLoading === true ? (
+        ""
+      ) : (
+        <div className="my-[40px]">
+          <MapHighlights />
+        </div>
+      )}
 
       <Container>
-        {/* <div className="text-center font-[700] text-[24px] text-[#2C2C2C]">
-          Our Donors
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-[40px] mt-[20px] mb-[73px]">
-
-          {
-            donors.map((item,index)=>(
-              <div
-              key={index.toString()}>
-              <div className="flex justify-center">
-                <img src={item.logo} alt="logo" />
-              </div>
-              <div className="font-[600] text-[14px] text-center">
-              {item.text1}
-              </div>
-              <div className="font-[600] text-[14px] text-center">
-             {item.text2}
-              </div>
-            </div>
-            ))
-          }
- 
-        </div> */}
         <Donors />
       </Container>
     </MainLayout>

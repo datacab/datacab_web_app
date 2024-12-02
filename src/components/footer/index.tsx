@@ -1,3 +1,4 @@
+import useContentDetails from "@hooks/useContentDetails";
 import { FiFacebook, FiLinkedin, FiYoutube } from "react-icons/fi";
 import {
   MdMailOutline,
@@ -8,6 +9,23 @@ import { RiTwitterXFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const { contentDetails, loading } = useContentDetails();
+
+  console.log("contentDetails", contentDetails);
+
+  const email =
+    contentDetails.find((item) => item.title === "Email")?.content ||
+    "email@email.org.ng";
+  console.log("email", email);
+  const address =
+    contentDetails.find((item) => item.title === "Address")?.content ||
+    "#NO address address, address.";
+  console.log("address", address);
+  const phone =
+    contentDetails.find((item) => item.title === "Phone")?.content ||
+    "+2347000000000";
+  console.log("phone", phone);
+
   return (
     <div className="flex flex-col  shadow-sm bg-brandGray ">
       <div className="w-[90%] mx-auto py-[20px] lg:py-[40px] flex flex-col gap-[20px] lg:flex-row justify-between items-start ">
@@ -28,7 +46,7 @@ const Footer = () => {
               Quick Links
             </label>
             <ul className="text-brandDark text-[16px] flex flex-col gap-[8px]">
-              <Link to="#about">
+              <Link to="/#about">
                 <li className="cursor-pointer">About</li>
               </Link>
               <Link to="/multimedia">
@@ -36,9 +54,6 @@ const Footer = () => {
               </Link>
               <Link to="/blog">
                 <li className="cursor-pointer">Blog</li>
-              </Link>
-              <Link to="/air-reading">
-                <li className="cursor-pointer">Oil Spillage</li>
               </Link>
               <Link to="/air-reading">
                 <li className="cursor-pointer">Air Monitoring</li>
@@ -52,28 +67,55 @@ const Footer = () => {
             >
               Media Awareness and Justice Initiative (MAJI)
             </label>
-            <ul className="text-brandDark text-[16px]  flex flex-col gap-[8px]">
+            <ul className="text-brandDark text-[16px] flex flex-col gap-[8px]">
+              {/* Email and Address section */}
               <li className="flex items-start gap-[8px]">
                 <MdMailOutline size={24} />
                 <div className="flex flex-col gap-[4px]">
                   <p className="text-[14px] font-[600]">Email</p>
-                  <p className="text-[14px] font-[500]">Support@maji.org.ng</p>
+                  {loading ? (
+                    <p className="text-[14px] font-[500]">Loading...</p>
+                  ) : email ? (
+                    <div
+                      className="text-brandDark text-[14px] font-[500]"
+                      dangerouslySetInnerHTML={{ __html: email }} // Render raw HTML
+                    />
+                  ) : (
+                    <p className="text-[14px] font-[500]">Not available</p>
+                  )}
                 </div>
               </li>
               <li className="flex items-start gap-[8px]">
                 <MdOutlineLocationOn size={24} />
                 <div className="flex flex-col gap-[4px]">
                   <p className="text-[14px] font-[600]">Address</p>
-                  <p className="text-[14px] font-[500]">
-                    #23 Okota Road, Lagos.
-                  </p>
+                  {loading ? (
+                    <p className="text-[14px] font-[500]">Loading...</p>
+                  ) : address ? (
+                    <div
+                      className="text-brandDark text-[14px] font-[500]"
+                      dangerouslySetInnerHTML={{ __html: address }} // Render raw HTML
+                    />
+                  ) : (
+                    <p className="text-[14px] font-[500]">Not available</p>
+                  )}
                 </div>
               </li>
+              {/* Phone number section */}
               <li className="flex items-start gap-[8px]">
                 <MdOutlinePhone size={24} />
                 <div className="flex flex-col gap-[4px]">
                   <p className="text-[14px] font-[600]">Phone</p>
-                  <p className="text-[14px] font-[500]">+2347081036103</p>
+                  {loading ? (
+                    <p className="text-[14px] font-[500]">Loading...</p>
+                  ) : phone ? (
+                    <div
+                      className="text-brandDark text-[14px] font-[500]"
+                      dangerouslySetInnerHTML={{ __html: phone }}
+                    />
+                  ) : (
+                    <p className="text-[14px] font-[500]">Not available</p>
+                  )}
                 </div>
               </li>
             </ul>

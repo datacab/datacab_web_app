@@ -2,8 +2,6 @@ const MapHighlights = () => {
   return (
     <div className="pb-[40px] lg:py-[40px]">
       <div className="flex flex-col gap-[8px] justify-center items-center">
-  
-
         <div className="w-full mt-[12px]">
           <iframe
             width="100%"
