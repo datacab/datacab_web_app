@@ -42,6 +42,7 @@ const Multimedia = () => {
     setModalOpen(true);
   };
 
+
   const renderImages = (startIndex: number, endIndex: number) => (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {multimediaDetails.slice(startIndex, endIndex).map((item) => (
@@ -84,10 +85,10 @@ const Multimedia = () => {
       <div className="flex items-center justify-between">
         <h2
           style={{
-            fontFamily: "Merriweather",
+            // fontFamily: "Merriweather",
             fontWeight: 700,
           }}
-          className="text-[20px] lg:text-[32px] lg:leading-[38px]"
+          className="text-[20px] lg:text-[32px] lg:leading-[38px] font-arialBlack"
         >
           Multimedia
         </h2>

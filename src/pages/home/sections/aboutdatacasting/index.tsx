@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { ExtractedContent } from "../../../../types/ExtractedContent";
+import useAirMonitoring from "@hooks/useAirMonitoring";
+// import { useEffect, useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -21,7 +23,22 @@ ChartJS.register(
   Legend
 );
 
+// Define the type of each device in AirMonitoringDetails
+// interface Device {
+//   id: string;
+//   lat: number;
+//   lon: number;
+//   location: string;
+// }
+
+// Define the return type of the hook
+
 const AboutDataCasting = () => {
+  const {
+    AirMonitoringDetails,
+    loading: isLoading,
+    numberOfStates,
+  } = useAirMonitoring();
   const data = {
     labels: [
       "Jan",
@@ -81,13 +98,15 @@ const AboutDataCasting = () => {
   };
 
   const { contentDetails, loading } = useContentDetails();
+  // console.log("contentDetails", contentDetails)
 
   // Filter content based on title and <h3> text within the content
-  const targetH3Text = "About the Data Casting Biodiversity Initiative";
+  // const targetH3Text = "DATA CASTING FOR BIODIVERSITY";
   const specificContent = contentDetails.find(
     (item) =>
-      item.title === "About Us" &&
-      item.content.includes(`<h2><strong>${targetH3Text}</strong></h2>`)
+      item.title === "About Us" 
+    // &&
+    //   item.content.includes(`<h2><strong>${targetH3Text}</strong></h2>`)
   );
 
   const extractContent = (content: string): ExtractedContent => {
@@ -120,8 +139,10 @@ const AboutDataCasting = () => {
           ) : specificContent ? (
             <div className="w-full  flex flex-col gap-[8px]">
               <h2
-                style={{ fontFamily: "Merriweather", fontWeight: 700 }}
-                className="text-[20px] lg:text-[32px] lg:w-[400px] lg:leading-[38px]"
+                style={{ 
+                  // fontFamily: "Merriweather",
+                  fontWeight: 700 }}
+                className="text-[20px] lg:text-[32px] lg:leading-[38px] uppercase font-arialBlack"
               >
                 {extracted.h2Text}
               </h2>
@@ -133,7 +154,7 @@ const AboutDataCasting = () => {
               </div>
             </div>
           ) : (
-            <p>Content not available for the specified heading</p>
+            <p>Content not available</p>
           )}
         </div>
 
@@ -143,43 +164,67 @@ const AboutDataCasting = () => {
             <Bar data={data} options={options} />
 
             <div className="w-[80px] h-[80px] lg:w-[100px] lg:h-[100px] bg-primaryColor rounded-full absolute bottom-[54px] lg:bottom-20 -right-[20px] lg:-right-[70px] shadow-brandDark flex flex-col text-brandWhite justify-center items-center">
-              <p
-                style={{
-                  fontFamily: "Merriweather",
-                  fontWeight: 700,
-                }}
-                className="text-[10px]  lg:text-[20px]"
-              >
-                7
-              </p>
-              <p className="text-[12px] lg:text-[14px]">States</p>
-              <p className="text-[12px] lg:text-[14px]">Reached</p>
+              {isLoading ? (
+                <p>loading...</p>
+              ) : (
+                <>
+                  {" "}
+                  <p
+                    style={{
+                      fontFamily: "Merriweather",
+                      fontWeight: 700,
+                    }}
+                    className="text-[10px]  lg:text-[20px]"
+                  >
+                    {numberOfStates && numberOfStates}
+                  </p>
+                  <p className="text-[12px] lg:text-[14px]">States</p>
+                  <p className="text-[12px] lg:text-[14px]">Reached</p>
+                </>
+              )}
             </div>
             <div className="w-[90px] h-[90px] lg:w-[120px] lg:h-[120px] bg-primaryColor rounded-full absolute -bottom-10 lg:-bottom-20 -right-[20px] lg:-right-[40px] shadow-brandDark  flex flex-col text-brandWhite justify-center items-center">
-              <p
-                style={{
-                  fontFamily: "Merriweather",
-                  fontWeight: 700,
-                }}
-                className="text-[12px] lg:text-[24px]"
-              >
-                40
-              </p>
-              <p className="text-[12px] lg:text-[14px]">Communities</p>
-              <p className="text-[12px] lg:text-[14px]">Reached</p>
+              {isLoading ? (
+                <p>loading...</p>
+              ) : (
+                <>
+                  <p
+                    style={{
+                      fontFamily: "Merriweather",
+                      fontWeight: 700,
+                    }}
+                    className="text-[12px] lg:text-[24px]"
+                  >
+                    {isLoading ? (
+                      <p>loading...</p>
+                    ) : (
+                      AirMonitoringDetails && AirMonitoringDetails?.length
+                    )}
+                  </p>
+                  <p className="text-[12px] lg:text-[14px]">Communities</p>
+                  <p className="text-[12px] lg:text-[14px]">Reached</p>
+                </>
+              )}
             </div>
             <div className="w-[100px] h-[100px] lg:w-[140px] lg:h-[140px] bg-primaryColor rounded-full absolute -bottom-20 lg:-bottom-40 right-[60px] shadow-md shadow-brandDark flex flex-col text-brandWhite justify-center items-center">
-              <p
-                style={{
-                  fontFamily: "Merriweather",
-                  fontWeight: 700,
-                }}
-                className="text-[16px] lg:text-[32px]"
-              >
-                34
-              </p>
-              <p className="text-[12px] lg:text-[14px]">Devices</p>
-              <p className="text-[12px] lg:text-[14px]">Deployed</p>
+              {isLoading ? (
+                <p>loading...</p>
+              ) : (
+                <>
+                  {" "}
+                  <p
+                    style={{
+                      fontFamily: "Merriweather",
+                      fontWeight: 700,
+                    }}
+                    className="text-[16px] lg:text-[32px]"
+                  >
+                    {AirMonitoringDetails && AirMonitoringDetails?.length}
+                  </p>
+                  <p className="text-[12px] lg:text-[14px]">Devices</p>
+                  <p className="text-[12px] lg:text-[14px]">Deployed</p>
+                </>
+              )}
             </div>
           </div>
         </div>

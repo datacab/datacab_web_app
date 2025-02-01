@@ -23,7 +23,7 @@ const useMultimedia = () => {
       if (response.data.status === "success") {
         setMultimediaDetails(response.data.data.reverse());
       }
-      console.log("fetchMultimediaDetails", response);
+      // console.log("fetchMultimediaDetails", response);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       message.error(

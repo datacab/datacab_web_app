@@ -10,10 +10,10 @@ const MobileAppExperience = () => {
         <div className="lg:w-[60%] mx-auto flex flex-col gap-[10px] py-[20px] lg:py-0">
           <h2
             style={{
-              fontFamily: "Merriweather",
+              // fontFamily: "Merriweather",
               fontWeight: 700,
             }}
-            className="text-[20px] lg:text-[32px]  lg:leading-[38px] w-[90%]  lg:mx-0 mx-auto lg:w-[613px] text-brandWhite"
+            className="text-[20px] lg:text-[32px]  lg:leading-[38px] w-[90%]  lg:mx-0 mx-auto lg:w-[613px] text-brandWhite font-arialBlack"
           >
             Experience seamless access to reliable data solutions at your
             fingertips.

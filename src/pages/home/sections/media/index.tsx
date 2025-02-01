@@ -3,17 +3,26 @@ import useContentDetails from "@hooks/useContentDetails";
 import { ExtractedContent } from "../../../../types/ExtractedContent";
 import { Spin } from "antd";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
+const images = [
+  { src: "/pic1.jpg", alt: "Awareness Image 1" },
+  { src: "/pic2.jpg", alt: "Awareness Image 2" },
+  { src: "/pic3.jpg", alt: "Awareness Image 3" },
+  { src: "/pic4.jpg", alt: "Awareness Image 4" },
+  { src: "/pic5.jpg", alt: "Awareness Image 5" },
+  { src: "/pic6.jpg", alt: "Awareness Image 6" },
+];
 
 const MediaAwareness = () => {
   const { contentDetails, loading } = useContentDetails();
 
   // Filter content based on title and <h3> text within the content
-  const targetH3Text = "Media Awareness and Justice Initiative (MAJI)";
+  // const targetH3Text = "Media Awareness and Justice Initiative (MAJI)";
   const specificContent = contentDetails.find(
-    (item) =>
-      item.title === "About Us" &&
-      item.content.includes(`<h2><strong>${targetH3Text}</strong></h2>`)
+    (item) => item.title === "Media Awareness"
+    // &&
+    //   item.content.includes(`<h2><strong>${targetH3Text}</strong></h2>`)
   );
 
   const extractContent = (content: string): ExtractedContent => {
@@ -34,6 +43,33 @@ const MediaAwareness = () => {
 
   const content = specificContent && specificContent?.content;
   const extracted = extractContent(content || "");
+
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  // Automatically move to the next slide every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  const handlePrev = (): void => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = (): void => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   return (
     <div className="pt-[0px] pb-[40px] lg:pt-[40px] lg:pb-[80px]">
       <div className="flex flex-col-reverse lg:flex-row justify-between items-center gap-[40px] lg:gap-[80px]">
@@ -45,8 +81,10 @@ const MediaAwareness = () => {
           ) : specificContent ? (
             <div className="w-full  flex flex-col gap-[8px]">
               <h2
-                style={{ fontFamily: "Merriweather", fontWeight: 700 }}
-                className="text-[20px] lg:text-[32px] lg:w-[400px] lg:leading-[38px]"
+                style={{ 
+                  // fontFamily: "Merriweather",
+                  fontWeight: 700 }}
+                className="text-[20px] lg:text-[32px] lg:leading-[38px] uppercase font-arialBlack"
               >
                 {extracted.h2Text}
               </h2>
@@ -63,27 +101,71 @@ const MediaAwareness = () => {
 
           {!loading && (
             <div className="flex items-center gap-[10px] lg:gap-[24px] mt-[12px]">
-              <Link to="#">
+              <Link to="https://www.majinigeria.org/" target="_blank">
                 <PrimaryBtn className="bg-primaryColor  h-[38px] lg:h-[48px] flex justify-center items-center text-brandWhite">
                   Visit Site
-                </PrimaryBtn>
-              </Link>
-              <Link to="#">
-                <PrimaryBtn className="text-brandWhite bg-brandDark  h-[38px] lg:h-[48px] flex justify-center items-center">
-                  See MAJI Campaigns
                 </PrimaryBtn>
               </Link>
             </div>
           )}
         </div>
+        <div className="relative w-full lg:w-[50%] hidden lg:flex justify-center items-center">
+          <div className="relative w-full lg:w-[418px]   shadow-[4px_8px_20px_5px_rgba(65,101,235,0.2)] rounded-xl overflow-hidden">
+            {/* Carousel Images */}
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{
+                transform: `translateX(-${currentIndex * 100}%)`,
+              }}
+            >
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 flex justify-center items-center w-full lg:w-[418px]  relative"
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="lg:h-[454px] lg:w-auto object-cover rounded-lg shadow-lg"
+                  />
+                  {/* Overlay Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/70 opacity-0  transition-opacity duration-500 rounded-lg flex justify-center items-end">
+                    <span className="text-white text-lg font-semibold mb-4">
+                      {image.alt}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-        <div className="w-full lg:w-[50%] hidden lg:flex">
-          <div className="flex relative justify-center  items-center w-full lg:w-[418px] lg:h-[563px]  bg-primaryColor shadow-[4px_8px_20px_5px_rgba(65,101,235,0.5)] rounded-xl">
-            <img
-              src="/awareimg.png"
-              alt="awareness image"
-              className="lg:h-[454px] lg:w-[600px] lg:absolute lg:left-24 lg:max-w-[500px] pt-[14px]"
-            />
+            {/*Navigation Buttons */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white text-primaryColor p-3 rounded-full shadow-md hover:bg-primaryColor hover:text-white transition-all duration-300"
+            >
+              &#10094;
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white text-primaryColor p-3 rounded-full shadow-md hover:bg-primaryColor hover:text-white transition-all duration-300"
+            >
+              &#10095;
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentIndex
+                      ? "bg-white scale-125"
+                      : "bg-gray-400 hover:bg-gray-300"
+                  }`}
+                ></button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
