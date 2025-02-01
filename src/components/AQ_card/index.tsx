@@ -28,43 +28,38 @@ const AQ_Card = ({ item, clickFN }: props) => {
   return (
     <div
       key={item.id}
-      className="w-full   flex items-center gap-x-[16px] cursor-pointer shadow-md rounded-[20px] px-[10px] py-[13px] lg:px-[24px] lg:py-[48px]"
+      className="w-full   flex items-center gap-x-[16px] cursor-pointer shadow-lg shadow-[4px_8px_20px_5px_rgba(65,101,235,0.2)] rounded-[20px] px-[10px] py-[13px] lg:px-[24px] lg:py-[48px]"
       onClick={() => clickFN(item)}
+      style={{ boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)" }}
     >
-   
-  <div className="w-[20%]">
-  <img
-          src="/pin_location.svg"
+      <div className="w-[20%] flex-shrink-0">
+        <img
+          src="/iconn.png"
           alt="uploaded image"
           className="w-[70px] h-[70px] rounded-[14px] object-cover"
         />
-  </div>
-    
-<div className="w-[80%]">
-<Paragraph
-        style={{
-          color: "#757575",
-         
-        }}
-        ellipsis={{ rows: 1, expandable: false }}
-      >
-        {item.serial_number}
-      </Paragraph>
-      <Title
-        style={{
-          color: "#2C2C2C",
-          marginTop:-10,
-      
-        }}
-        ellipsis={{ rows: 1, expandable: false }}
-        level={4}
-      >
-        {item.location}
-      </Title>
-   
-</div>
+      </div>
 
-  
+      <div className="w-[80%]">
+        <Paragraph
+          style={{
+            color: "#757575",
+          }}
+          ellipsis={{ rows: 1, expandable: false }}
+        >
+          {item.location}
+        </Paragraph>
+        <Title
+          style={{
+            color: "#2C2C2C",
+            marginTop: -10,
+          }}
+          ellipsis={{ rows: 1, expandable: false }}
+          level={4}
+        >
+          {item.serial_number}
+        </Title>
+      </div>
     </div>
   );
 };

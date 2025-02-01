@@ -17,6 +17,9 @@ export default {
         'custom-xl': '0 10px 20px rgba(65, 101, 235, 0.8)',
       },
     },
+    fontFamily: {
+      arialBlack: ['"Arial Black"', "Arial", "sans-serif"],
+    },
   },
   plugins: [],
 }

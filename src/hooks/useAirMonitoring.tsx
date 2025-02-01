@@ -2,26 +2,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { message } from "antd";
 import { BASE_URL } from "@api/index";
+import { AMD_type_v2 } from "../types/airMonitoring";
 
 // Define the interface for each air monitoring detail item
-interface AirMonitoringDetail {
-  id: string | null | undefined;
-  device_uid: string;
-  serial_number: string;
-  location: string;
-  lat: number; // Latitude
-  lon: number; // Longitude
-}
+
 
 interface UseAirMonitoringReturn {
-  AirMonitoringDetails: AirMonitoringDetail[];
+  // AirMonitoringDetails: AirMonitoringDetail[];
+  AirMonitoringDetails: AMD_type_v2[];
   loading: boolean;
   numberOfStates: number;
 }
 
 const useAirMonitoring = (): UseAirMonitoringReturn => {
   const [AirMonitoringDetails, setAirMonitoringDetails] = useState<
-    AirMonitoringDetail[]
+  AMD_type_v2[]
   >([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [numberOfStates, setNumberOfStates] = useState<number>(0);
@@ -31,7 +26,7 @@ const useAirMonitoring = (): UseAirMonitoringReturn => {
     setLoading(true);
     try {
       const response = await axios.get(`${BASE_URL}/air-monitoring`);
-      console.log("fetchAirMonitoringDetails", response);
+      // console.log("fetchAirMonitoringDetails", response);
 
       if (response.status === 200 || response.data.status === "success") {
         setAirMonitoringDetails(response.data.data);

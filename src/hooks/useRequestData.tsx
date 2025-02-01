@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { message } from "antd";
 
-// Define the hook with proper event typings
 const useRequestData = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -11,13 +10,11 @@ const useRequestData = () => {
     message: "",
   });
 
-  // Explicitly typing the error state as string or null
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Type the event for handleChange as React.ChangeEvent<HTMLInputElement> or React.ChangeEvent<HTMLTextAreaElement>
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -30,16 +27,15 @@ const useRequestData = () => {
     }));
   };
 
-  // Type the event for handleSubmit as React.FormEvent<HTMLFormElement>
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(false);
-    setSuccessMessage(null); // Reset success message before sending request
+    setSuccessMessage(null);
 
     const requestBody = {
-      to: "adetoyeofficial@gmail.com",
+      to: "support@maji.org.ng",
       ...formData,
     };
 
@@ -48,7 +44,6 @@ const useRequestData = () => {
         "https://datacab-server-8x13.onrender.com/air-monitoring/request-data",
         requestBody
       );
-      // console.log("response", response);
       if (response.status === 201 || response.data.status === "success") {
         message.success(response.data.message || "Email sent successfully!");
         setSuccess(true);
@@ -60,9 +55,8 @@ const useRequestData = () => {
           message: "",
         });
 
-        // Hide success message after 5 seconds
         setTimeout(() => {
-          setSuccessMessage(null); // Clear success message after 5 seconds
+          setSuccessMessage(null);
         }, 5000);
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

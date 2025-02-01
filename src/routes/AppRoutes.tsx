@@ -32,6 +32,7 @@ const AppRouter = () => {
             </React.Suspense>
           }
         />
+
         <Route
           path="/blog"
           element={

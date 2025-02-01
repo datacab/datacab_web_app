@@ -5,16 +5,15 @@ import { IoSearch } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AQ_Card from "@components/AQ_card";
-// import MapHighlights from "./map";
 import Container from "@components/container";
 import Donors from "@pages/home/sections/donors";
 import Select_v2 from "@components/select/Select_v2";
-import { AMD_type, AMD_type_v2 } from "../../types/airMonitoring";
-import useAqtStore from "@store/airReading";
+import { AMD_type_v2 } from "../../types/airMonitoring";
 import { MdClear } from "react-icons/md";
-import { BASE_URL } from "@api/index";
-import { useQuery } from "@tanstack/react-query";
 import MapHighlights from "@pages/home/sections/map";
+import useAirMonitoring from "../../hooks/useAirMonitoring";
+import useContentDetails from "@hooks/useContentDetails";
+
 
 interface SelectOption {
   value: string;
@@ -28,29 +27,52 @@ interface FilterValues {
 }
 
 const AirReading = () => {
-  const fetch_air_reading_data = async () => {
-    const response = await fetch(`${BASE_URL}/air-monitoring`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  // const fetch_air_reading_data = async () => {
+  //   const response = await fetch(`${BASE_URL}/air-monitoring`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Network response was not ok");
-    }
+  //   if (!response.ok) {
+  //     const errorData = await response.json();
+  //     throw new Error(errorData.message || "Network response was not ok");
+  //   }
 
-    return response.json();
-  };
+  //   return response.json();
+  // };
 
-  const { isLoading, data } = useQuery<AMD_type>({
-    queryKey: ["get_all_air_reading_data"],
-    queryFn: fetch_air_reading_data,
-  });
+  // const { isLoading, data } = useQuery<AMD_type>({
+  //   queryKey: ["get_all_air_reading_data"],
+  //   queryFn: fetch_air_reading_data,
+  // });
 
-  const aqt_data = useAqtStore((state) => state.AQI_datas);
-  const set_aqt_data = useAqtStore((state) => state.set_AQI_datas);
+  // const data?.data = useAqtStore((state) => state.AQI_datas);
+  // const set_data?.data = useAqtStore((state) => state.set_AQI_datas);
+
+  const { AirMonitoringDetails: data, loading: isLoading } = useAirMonitoring();
+  const { contentDetails, loading } = useContentDetails();
+
+  // console.log("contentDetails", contentDetails);
+
+  const AirReadingTitle = contentDetails.find(
+    (item) => item.title === "Air Reading"
+  )?.title;
+
+  const AirReadingDesc = contentDetails.find(
+    (item) => item.title === "Air Reading"
+  )?.content;
+
+  // console.log("AirReading", {
+  //   AirReadingTitle: AirReadingTitle,
+  //   AirReadingDesc: AirReadingDesc,
+  // });
+
+  // <div
+  //                     className="text-brandDark text-[14px] font-[500]"
+  //                     dangerouslySetInnerHTML={{ __html: address }} // Render raw HTML
+  //                   />
 
   const [filteredItems, setFilteredItems] = useState<AMD_type_v2[] | undefined>(
     []
@@ -61,9 +83,16 @@ const AirReading = () => {
 
   // Initial data setup
   useEffect(() => {
-    set_aqt_data(data?.data);
-    setFilteredItems(data?.data);
-  }, []);
+    // set_data?.data(data?.data);
+    setFilteredItems(data);
+    // console.log(data?.data)
+  }, [data]);
+
+  // const fetchedData = data?.data
+
+  //  const filterData = data?.data.filter(()=>{
+
+  //  })
 
   // const [countryOptions, setCountryOptions] = useState<SelectOption[]>([]);
   const [communityOption, setCommunityOption] = useState<SelectOption[]>([]);
@@ -80,11 +109,11 @@ const AirReading = () => {
     location: null,
   });
   const generateFilterOptions = () => {
-    // First, ensure aqt_data is not undefined
-    if (!aqt_data) return;
+    // First, ensure data?.data is not undefined
+    if (!data) return;
 
     // Process the data with a proper type
-    const processedData = aqt_data.map((data) => ({
+    const processedData = data?.map((data) => ({
       ...data,
       community: data.serial_number,
       location: data.location,
@@ -94,7 +123,7 @@ const AirReading = () => {
     const uniqueOptions = <K extends keyof (typeof processedData)[number]>(
       field: K
     ) => {
-      return Array.from(new Set(processedData.map((item) => item[field]))).map(
+      return Array.from(new Set(processedData?.map((item) => item[field]))).map(
         (value, index) => ({
           value: value as string,
           label: value as string,
@@ -119,7 +148,7 @@ const AirReading = () => {
   //     generateFilterOptions();
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [showFilter, aqt_data]);
+  // }, [showFilter, data?.data]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFilterChange = (value: any, field: keyof FilterValues) => {
@@ -131,7 +160,7 @@ const AirReading = () => {
   };
 
   const applyFilter = () => {
-    const filtered = aqt_data?.filter((item) => {
+    const filtered = data?.filter((item) => {
       const communityMatch =
         !filterValues.community ||
         item.serial_number === filterValues.community;
@@ -152,7 +181,7 @@ const AirReading = () => {
       community: null,
       location: null,
     });
-    setFilteredItems(aqt_data);
+    setFilteredItems(data);
     setShowFilter_v2(false);
     setShowFilter(false);
     set_filter_input_values(false);
@@ -181,26 +210,23 @@ const AirReading = () => {
   };
 
   useEffect(() => {
-    let result = aqt_data;
-
     // Apply search query
     if (searchQuery) {
-      result = result?.filter((AQI_data) => {
+      const result = data?.filter((AQI_data) => {
         const searchLower = searchQuery.toLowerCase();
         return (
           AQI_data.location.toLowerCase().includes(searchLower) ||
           AQI_data.serial_number.toLowerCase().includes(searchLower)
         );
       });
+      setFilteredItems(result);
+      setCurrentPage(1);
     }
-
-    setFilteredItems(result);
-    setCurrentPage(1);
-  }, [searchQuery, aqt_data]);
+  }, [searchQuery]);
 
   const dataPerPage = 9;
 
-  // const currentItems = aqt_data?.slice(
+  // const currentItems = data?.data?.slice(
   //   (currentPage - 1) * dataPerPage,
   //   currentPage * dataPerPage
   // );
@@ -225,14 +251,31 @@ const AirReading = () => {
   return (
     <MainLayout>
       <Container>
-        <div className="flex justify-center mt-[60px]">
+        <div className="flex justify-center mt-[20vh] lg:mt-[25vh]">
           <div className="w-[100%] ">
-            <h1 className="font-[700] text-[32px] text-[#2C2C2C]">
-              Air Reading
+            <h1 className="font-[700] text-[32px] text-[#2C2C2C] font-arialBlack">
+              {loading ? (
+                "Loading..."
+              ) : (
+                <>
+                  <div
+                    className="font-[700] text-[32px] text-[#2C2C2C] font-arialBlack"
+                    dangerouslySetInnerHTML={{ __html: AirReadingTitle || '' }}
+                  />
+                </>
+              )}
             </h1>
             <p className="my-[16px] text-[#757575] text-[18px] font-[500] md:w-[50%] ">
-              We simplify environmental incident data into clear infographics,
-              fostering grassroots participation in environmental protection.
+              {loading ? (
+                "Loading..."
+              ) : (
+                <>
+                  <div
+                    className="text-[#757575] text-[18px] font-[500]"
+                    dangerouslySetInnerHTML={{ __html: AirReadingDesc || '' }}
+                  />
+                </>
+              )}
             </p>
 
             {/* <div className="flex justify-between items-center"> */}
@@ -250,6 +293,8 @@ const AirReading = () => {
                     className="absolute right-[5px] top-[20%] z-[500] cursor-pointer"
                     onClick={() => {
                       setSearchQuery("");
+                      setFilteredItems(data);
+                      setCurrentPage(1);
                     }}
                   >
                     <MdClear color="red" size={30} />
@@ -312,7 +357,7 @@ const AirReading = () => {
                     <div className="lg:w-[25%] ">
                       <Select_v2
                         name="location"
-                        label="Location"
+                        label="State"
                         placeholder="Select location"
                         required={false}
                         options={locationOption}
@@ -377,7 +422,7 @@ const AirReading = () => {
 
             {isLoading === true ? (
               <div className="my-[40px] grid grid-cols-3 gap-[19px]">
-                {Array.from({ length: dataPerPage }).map((_, index) => (
+                {Array.from({ length: dataPerPage })?.map((_, index) => (
                   <div
                     key={index}
                     className="relative w-full h-[180px] flex flex-col gap-2"
@@ -404,7 +449,7 @@ const AirReading = () => {
                 className="my-6 flex justify-end"
                 current={currentPage}
                 pageSize={dataPerPage}
-                total={aqt_data?.length}
+                total={data?.length}
                 // total={AQI_datas.length}
                 onChange={onPageChange}
               />
@@ -415,13 +460,9 @@ const AirReading = () => {
         </div>
       </Container>
 
-      {isLoading === true ? (
-        ""
-      ) : (
-        <div className="my-[40px]">
-          <MapHighlights />
-        </div>
-      )}
+      <div className="my-[40px]">
+        <MapHighlights />
+      </div>
 
       <Container>
         <Donors />

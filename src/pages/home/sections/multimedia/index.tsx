@@ -85,10 +85,10 @@ const Multimedia = () => {
       <div className="flex items-center justify-between">
         <h2
           style={{
-            fontFamily: "Merriweather",
+            // fontFamily: "Merriweather",
             fontWeight: 700,
           }}
-          className="text-[20px] lg:text-[32px] lg:leading-[38px]"
+          className="text-[20px] lg:text-[32px] lg:leading-[38px] font-arialBlack"
         >
           Multimedia
         </h2>

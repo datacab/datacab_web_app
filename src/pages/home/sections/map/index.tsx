@@ -7,12 +7,31 @@ import {
 } from "@react-google-maps/api";
 import useAirMonitoring from "@hooks/useAirMonitoring";
 
-// Define the type of each device in AirMonitoringDetails
+// Define the type for air quality readings
+interface AirReading {
+  airQualityReadingId: string;
+  aqi: number;
+  captured: number;
+  createdAt: string;
+  device_uid: string;
+  humidity: number;
+  id: string;
+  pm01_0: number;
+  pm02_5: number;
+  pm10_0: number;
+  pressure: number;
+  temperature: number;
+  updatedAt: string;
+  voltage: number;
+}
+
+// Define the type for each device, including air readings
 interface Device {
   id: string;
   lat: number;
   lon: number;
   location: string;
+  airReading: AirReading[]; // Added airReading property
 }
 
 const containerStyle = {
@@ -21,7 +40,7 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 9.082, // Nigeria's approximate center
+  lat: 9.082,
   lng: 8.6753,
 };
 
@@ -34,15 +53,25 @@ const MapHighlights = () => {
     null
   );
 
+  // console.log("selectedDevice", selectedDevice);
+
+   
+  //   selectedDevice &&
+  //   selectedDevice.airReading.reduce((latest, current) => {
+  //     return current.captured > latest.captured ? current : latest;
+  //   }, selectedDevice.airReading[0]);
+
+  // console.log("latestAirReading", latestAirReading);
+
   return (
     <div className="pb-[40px] lg:py-[40px]">
       <div className="flex flex-col gap-[8px] justify-center items-center">
         <h2
           style={{
-            fontFamily: "Merriweather",
+            // fontFamily: "Merriweather",
             fontWeight: 700,
           }}
-          className="text-[20px] lg:text-[32px] lg:w-[379px] lg:leading-[38px] text-center"
+          className="text-[20px] lg:text-[32px] lg:w-[379px] lg:leading-[38px] text-center uppercase font-arialBlack"
         >
           Map Highlights
         </h2>
@@ -68,11 +97,10 @@ const MapHighlights = () => {
                       url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Red dot marker
                       scaledSize: new window.google.maps.Size(40, 40), // Adjust the size of the marker
                     }}
-                    // labelOrigin={new window.google.maps.Point(0, -30)}
                   />
                 ))}
 
-              {selectedDevice && (
+              {selectedDevice && selectedDevice.airReading && (
                 <InfoWindow
                   position={{
                     lat: selectedDevice.lat,
@@ -85,10 +113,27 @@ const MapHighlights = () => {
                       {selectedDevice.location}
                     </h4>
                     <p className="text-sm text-left">
-                      Latitude: {selectedDevice.lat}
+                      AQI: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.aqi}
                     </p>
                     <p className="text-sm text-left">
-                      Longitude: {selectedDevice.lon}
+                      PM01_0: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pm01_0}
+                    </p>
+
+                    <p className="text-sm text-left">
+                      PM02_5: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pm02_5}
+                    </p>
+
+                    <p className="text-sm text-left">
+                      PM10_0: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pm10_0}
+                    </p>
+                    <p className="text-sm text-left">
+                      Temperature: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.temperature}
+                    </p>
+                    <p className="text-sm text-left">
+                      Pressure: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pressure}
+                    </p>
+                    <p className="text-sm text-left">
+                      Voltage: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.voltage}
                     </p>
                   </div>
                 </InfoWindow>

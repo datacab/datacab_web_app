@@ -23,15 +23,15 @@ const RequestData = () => {
   };
 
   return (
-    <div className="bg-brandLightBlue p-[16px] lg:p-[32px] rounded-[10px]">
+    <div className="bg-white p-[16px] lg:p-[32px] rounded-[10px]">
       <div className="flex flex-col lg:flex-row gap-10 lg:gap-40">
         <div className="flex flex-col gap-[12px] lg:gap-[24px] lg:w-[50%]">
           <h2
             style={{
-              fontFamily: "Merriweather",
+              // fontFamily: "Merriweather",
               fontWeight: 700,
             }}
-            className="text-[20px] lg:text-[32px] lg:leading-[38px]"
+            className="text-[20px] lg:text-[32px] lg:leading-[38px] font-arialBlack"
           >
             Request Data
           </h2>
@@ -47,7 +47,7 @@ const RequestData = () => {
         <div className="lg:w-[50%]">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-[10px] lg:gap-[20px]"
+            className="flex flex-col gap-[10px] lg:gap-[20px] bg-gray-100 p-8 rounded-[10px]"
           >
             <div className="flex flex-col gap-2">
               <label htmlFor="name" className="text-[14px]">

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Hero = () => {
   return (
     <div
-      className="relative h-[500px]"
+      className="relative xl:h-[86vh] mt-[14vh] py-[20px] lg:py-0"
       style={{ backgroundImage: "url(datacabherobg.png)" }}
     >
       {/* Overlay for the background color */}
@@ -15,20 +15,23 @@ const Hero = () => {
         <div className="relative flex flex-col gap-[16px] lg:gap-[24px] justify-center items-center h-full">
           <h1
             style={{
-              fontFamily: "Merriweather",
+              // fontFamily: "Merriweather",
               fontWeight: 700,
             }}
-            className="text-[24px] md:text-[32px] lg:text-[48px] text-center font-[700] lg:leading-[57px] lg:w-[997px]"
+            className="text-[24px] md:text-[32px] lg:text-[48px] text-center font-[700] lg:leading-[57px] lg:w-[997px] font-arialBlack"
           >
-            Empowering Environmental Advocacy Through Data Simplification for
-            Sustainable Action
+            STRENGTHENING ENVIRONMENTAL ADVOCACY THROUGH DATA SIMPLIFICATION FOR
+            EVIDENCE BASED ACTION
           </h1>
           <h3 className="text-[16px] lg:text-[18px] font-[500]   lg:w-[936px] lg:leading-[28px]  text-center">
-            We simplify environmental incident data into clear infographics,
-            fostering grassroots participation in environmental protection. Our
-            tools support data analysis and geospatial mapping, driving informed
-            advocacy and targeted interventions across Nigeria, backed by
-            reliable sources and real-time air quality monitoring.
+            The Media Awareness and Justice Initiative through the{" "}
+            <b className="font-arialBlack">DATACAB</b> portal collects, analyzes
+            and simplifies real time environmental data, presenting them in
+            clear infographic forms and formats. Our overall aim is to foster
+            citizen and stakeholder participation in environmental monitoring,
+            reporting and engagements using evidence-based data to drive
+            informed advocacy, help key stakeholders identify targeted
+            interventions and informative policy development across Nigeria
           </h3>
 
           <div className="flex ">

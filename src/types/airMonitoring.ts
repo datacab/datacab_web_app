@@ -108,3 +108,79 @@ export interface AMD_type_v2 {
     }
   ];
 }
+
+
+
+export interface data_type {
+  id: string;
+  device_uid: string;
+  serial_number: string;
+  location: string;
+  lat: string;
+  lon: string;
+  createdAt: string;
+  updatedAt: string;
+  airReadingId: string;
+  aqi: string;
+  humidity: string;
+  pm01_0: string;
+  pm02_5: string;
+  pm10_0: string;
+  pressure: string;
+  temperature: string;
+  voltage: string;
+  captured: string;
+  airReadingCreatedAt: string;
+  airReading:airReadingDataType[];
+  // histories:historiesDataType[];
+}
+
+  
+
+  export interface airReadingDataType{
+    id: string;
+    device_uid: string;
+    serial_number: string;
+    location:string;
+    lat: string;
+    lon: string;
+    createdAt: string;
+    updatedAt:string;
+    airReadingId: string;
+    aqi: string;
+    humidity: string;
+    pm01_0: string;
+    pm02_5:string;
+    pm10_0: string;
+    pressure: string;
+    temperature: string;
+    voltage: string;
+    captured: string;
+    airReadingCreatedAt: string;
+  }
+
+
+
+
+  export interface FlattenedDataType {
+    deviceId: string;
+    deviceUid: string;
+    serialNumber: string;
+    location: string;
+    latitude: string;
+    longitude: string;
+    createdAt: string;
+    updatedAt: string;
+    readingType: string; // "Air Reading" or "History"
+    readingId: string;
+    aqi: number | null;
+    humidity: number | null;
+    pm01_0: number | null;
+    pm02_5: number | null;
+    pm10_0: number | null;
+    pressure: number | null;
+    temperature: number | null;
+    voltage: number | null;
+    captured: number | null;
+    readingCreatedAt: string;
+  }

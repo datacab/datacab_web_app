@@ -11,23 +11,23 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   const { contentDetails, loading } = useContentDetails();
 
-  console.log("contentDetails", contentDetails);
+  // console.log("contentDetails", contentDetails);
 
   const email =
     contentDetails.find((item) => item.title === "Email")?.content ||
     "email@email.org.ng";
-  console.log("email", email);
+  // console.log("email", email);
   const address =
     contentDetails.find((item) => item.title === "Address")?.content ||
     "#NO address address, address.";
-  console.log("address", address);
+  // console.log("address", address);
   const phone =
     contentDetails.find((item) => item.title === "Phone")?.content ||
     "+2347000000000";
-  console.log("phone", phone);
+  // console.log("phone", phone);
 
   return (
-    <div className="flex flex-col  shadow-sm bg-brandGray ">
+    <div className="flex flex-col  shadow-sm bg-white ">
       <div className="w-[90%] mx-auto py-[20px] lg:py-[40px] flex flex-col gap-[20px] lg:flex-row justify-between items-start ">
         <Link to="/" className="flex items-center z-[100] ">
           <img
@@ -123,23 +123,23 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-brandDark   py-[16px] bg-brandGray w-full ">
+      <div className="border-t border-gray-200   py-[16px] bg-white w-full ">
         <div className="w-[90%] mx-auto flex flex-col gap-[14px] lg:gap-0 lg:flex-row justify-between ">
           <p className="text-[16px] text-black">
             &copy; 2024 Datacab. All rights reserved.
           </p>
 
           <ul className="flex gap-[8px] items-center">
-            <li className="w-[24px] h-[24px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
+            <li className="w-[24px] h-[24px] lg:w-[32px] lg:h-[32px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
               <FiFacebook size={24} />
             </li>
-            <li className="w-[24px] h-[24px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
+            <li className="w-[24px] h-[24px] lg:w-[32px] lg:h-[32px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
               <FiLinkedin size={24} />
             </li>
-            <li className="w-[24px] h-[24px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
+            <li className="w-[24px] h-[24px] lg:w-[32px] lg:h-[32px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
               <RiTwitterXFill size={24} />
             </li>
-            <li className="w-[24px] h-[24px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
+            <li className="w-[24px] h-[24px] lg:w-[32px] lg:h-[32px] rounded-full p-2 border border-brandDark flex items-center justify-center cursor-pointer">
               <FiYoutube size={24} />
             </li>
           </ul>
