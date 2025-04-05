@@ -47,12 +47,12 @@ const useAirMonitoring = (): UseAirMonitoringReturn => {
     try {
       const response = await fetch(url);
       const data = await response.json();
-      console.log("data", data)
+      // console.log("data", data)
 
       if (data.status === "OK") {
         // Iterate over address components to find the state
         const result = data.results[0];
-        console.log("result", result)
+        // console.log("result", result)
         const stateComponent = result.address_components.find(
           (component: { types: string | string[] }) =>
             component.types.includes("administrative_area_level_1")
@@ -69,7 +69,7 @@ const useAirMonitoring = (): UseAirMonitoringReturn => {
 
   const getUniqueStatesCount = async () => {
     const uniqueStates = new Set();
-    console.log("uniqueStates", uniqueStates)
+    // console.log("uniqueStates", uniqueStates)
     for (const item of AirMonitoringDetails) {
       const state = await getStateFromCoordinates(item.lat, item.lon);
       if (state) {
@@ -90,7 +90,7 @@ const useAirMonitoring = (): UseAirMonitoringReturn => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [AirMonitoringDetails]);
 
-  console.log("numberOfStates", numberOfStates)
+  // console.log("numberOfStates", numberOfStates)
 
   return { AirMonitoringDetails, loading, numberOfStates };
 };

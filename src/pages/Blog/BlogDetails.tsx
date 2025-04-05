@@ -22,7 +22,7 @@ const BlogDetails = () => {
   const location = useLocation();
   const { item } = location.state || {};
 
-  console.log("blogs", blogs);
+  // console.log("blogs", blogs);
 
   const formattedDate = (value: string) => {
     const formattedDate_v1 = moment(value).format("YYYY-MM-DD");
