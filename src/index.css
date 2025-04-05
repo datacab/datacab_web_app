@@ -8,3 +8,12 @@ body {
   font-family: "Manrope", sans-serif;
   background-color: whitesmoke;
 }
+
+.my-content p {
+  margin-bottom: 2rem;
+}
+.my-content p a {
+  color: #1D48E7;
+  text-decoration: underline;
+  font-weight: 600;
+}

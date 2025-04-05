@@ -21,12 +21,12 @@ const BlogDetails = () => {
   const location = useLocation();
   const { item } = location.state || {};
 
+  console.log("blogs", blogs);
 
   const formattedDate = (value: string) => {
     const formattedDate_v1 = moment(value).format("YYYY-MM-DD");
     return formattedDate_v1;
   };
-
 
   const getRandomItems = (array: BlogData[], count: number): BlogData[] => {
     return array
@@ -46,7 +46,7 @@ const BlogDetails = () => {
 
   return (
     <MainLayout>
-      <div className="flex justify-center mt-[60px]">
+      <div className="flex justify-center mt-[20vh] lg:mt-[25vh]">
         <div className="w-[90%] md:flex md:gap-x-[20px] xl:gap-x-[40px] mb-[150px] md:mb-[280px]">
           <div className="w-full md:w-[70%]">
             {item && (
@@ -77,7 +77,7 @@ const BlogDetails = () => {
                   style={{
                     color: "#757575",
                   }}
-                  className="text-[14px]"
+                  className="text-[16px] my-content"
                   dangerouslySetInnerHTML={{ __html: item.content }}
                 />
               </div>
@@ -139,7 +139,9 @@ const BlogDetails = () => {
                       {item.content.replace(/<[^>]*>/g, "")}
                     </Paragraph>
                     <div className="flex items-center gap-x-[15px]">
-                      <div className="text-[14px] text-[#1D48E7]">Read more</div>
+                      <div className="text-[14px] text-[#1D48E7]">
+                        Read more
+                      </div>
                       <img src="/arrowRightUp.svg" alt="arrow right up" />
                     </div>
                   </div>
