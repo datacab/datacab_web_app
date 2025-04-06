@@ -16,13 +16,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, image, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-      <img src={image} alt="" className="max-w-full max-h-[80vh] rounded-lg" />
-      <button
-        className="absolute top-10 right-10 text-white text-2xl"
-        onClick={onClose}
-      >
-        <IoIosCloseCircleOutline size={24} />
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-[999]">
+      <img
+        src={image}
+        alt=""
+        className="max-w-[90%] lg:max-w-full max-h-[80vh] rounded-lg"
+      />
+      <button className="absolute top-10 right-10 text-2xl" onClick={onClose}>
+        <IoIosCloseCircleOutline size={40} color="#fff" />
       </button>
     </div>
   );
@@ -41,7 +42,6 @@ const Multimedia = () => {
     setSelectedImage(src);
     setModalOpen(true);
   };
-
 
   const renderImages = (startIndex: number, endIndex: number) => (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -62,17 +62,15 @@ const Multimedia = () => {
               )
             }
           />
-  
+
           {/* Overlay with title on hover */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-[14px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-[14px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none text-center px-8">
             {item.title}
           </div>
         </div>
       ))}
     </div>
   );
-  
-  
 
   const startIndex = (currentPage - 1) * imagesPerPage;
   const endIndex = Math.min(
@@ -119,7 +117,9 @@ const Multimedia = () => {
       ) : multimediaDetails.length > 0 ? (
         <div className="my-[40px]">{renderImages(startIndex, endIndex)}</div>
       ) : (
-        <p className="text-[14px] text-center text-red-500">Content not available</p>
+        <p className="text-[14px] text-center text-red-500">
+          Content not available
+        </p>
       )}
 
       <Modal

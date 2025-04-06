@@ -32,7 +32,7 @@ const Nav = () => {
   };
 
   return (
-    <div className="flex fixed top-0 z-[9999999] justify-between bg-white items-center w-[100%] px-4 lg:px-[80px] mx-auto py-[2rem] shadow-sm h-[14vh] ">
+    <div className="flex fixed top-0 z-20 justify-between bg-white items-center w-[100%] px-4 lg:px-[80px] mx-auto py-[2rem] shadow-sm h-[14vh] ">
       <Link to="/" className="flex items-center z-[100]">
         <img src="/datalogo.png" alt="logo" className="w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem]" />
       </Link>
