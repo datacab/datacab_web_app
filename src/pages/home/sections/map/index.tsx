@@ -6,6 +6,7 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import useAirMonitoring from "@hooks/useAirMonitoring";
+import { GOOGLE_API_KEY } from "@api/index";
 
 // Define the type for air quality readings
 interface AirReading {
@@ -71,7 +72,7 @@ const MapHighlights = () => {
         </h3>
 
         <div className="w-full mt-[12px]">
-          <LoadScript googleMapsApiKey="AIzaSyDPPlrhA3vKOngBEwdxSY2E6xY0EqUYcLY">
+          <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={center}

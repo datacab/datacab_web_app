@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { message } from "antd";
-import { BASE_URL } from "@api/index";
+import { BASE_URL, GOOGLE_API_KEY } from "@api/index";
 import { AMD_type_v2 } from "../types/airMonitoring";
 
 // Define the interface for each air monitoring detail item
-
 
 interface UseAirMonitoringReturn {
   // AirMonitoringDetails: AirMonitoringDetail[];
@@ -16,7 +15,7 @@ interface UseAirMonitoringReturn {
 
 const useAirMonitoring = (): UseAirMonitoringReturn => {
   const [AirMonitoringDetails, setAirMonitoringDetails] = useState<
-  AMD_type_v2[]
+    AMD_type_v2[]
   >([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [numberOfStates, setNumberOfStates] = useState<number>(0);
@@ -41,18 +40,17 @@ const useAirMonitoring = (): UseAirMonitoringReturn => {
 
   // Function to fetch state from Google Geocoding API
   const getStateFromCoordinates = async (lat: number, lon: number) => {
-    const apiKey = "AIzaSyDzofLb9GTpwTJDg2U-l0Ez-Ya4iw5dVss"; // Your API key
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${GOOGLE_API_KEY}`;
 
     try {
       const response = await fetch(url);
       const data = await response.json();
-      // console.log("data", data)
+      // console.log("data", data);
 
       if (data.status === "OK") {
         // Iterate over address components to find the state
         const result = data.results[0];
-        // console.log("result", result)
+        // console.log("result", result);
         const stateComponent = result.address_components.find(
           (component: { types: string | string[] }) =>
             component.types.includes("administrative_area_level_1")
