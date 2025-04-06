@@ -71,7 +71,7 @@ const MapHighlights = () => {
         </h3>
 
         <div className="w-full mt-[12px]">
-          <LoadScript googleMapsApiKey="AIzaSyDzofLb9GTpwTJDg2U-l0Ez-Ya4iw5dVss">
+          <LoadScript googleMapsApiKey="AIzaSyDPPlrhA3vKOngBEwdxSY2E6xY0EqUYcLY">
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={center}

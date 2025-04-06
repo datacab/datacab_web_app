@@ -78,7 +78,7 @@ const MapHighlights = ({ id, lat, lon, location, airReading }: Device) => {
 
         <div className="w-full mt-[12px]">
           <LoadScript
-            googleMapsApiKey="AIzaSyDzofLb9GTpwTJDg2U-l0Ez-Ya4iw5dVss"
+            googleMapsApiKey="AIzaSyDPPlrhA3vKOngBEwdxSY2E6xY0EqUYcLY"
             onLoad={handleMapLoad}
           >
             {mapLoaded && (
