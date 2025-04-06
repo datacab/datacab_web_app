@@ -16,13 +16,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, image, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-      <img src={image} alt="" className="max-w-full max-h-[80vh] rounded-lg" />
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-[999]">
+      <img src={image} alt="" className="max-w-[90%] lg:max-w-full max-h-[80vh] rounded-lg" />
       <button
-        className="absolute top-10 right-10 text-white text-2xl"
+        className="absolute top-10 right-10 text-2xl"
         onClick={onClose}
       >
-        <IoIosCloseCircleOutline size={24} />
+        <IoIosCloseCircleOutline size={40} color="#fff" />
       </button>
     </div>
   );
@@ -89,7 +89,7 @@ const Multimedia = () => {
           />
 
           {/* Overlay with title on hover */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-[14px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white text-[14px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none text-center px-8">
             {item.title}
           </div>
         </div>
@@ -123,7 +123,7 @@ const Multimedia = () => {
   return (
     <MainLayout>
       <Container>
-        <div className="flex justify-center mt-[20vh] lg:mt-[25vh]">
+        <div className="flex justify-center mt-[20vh] lg:mt-[25vh] ">
           <div className="w-[100%]">
             <h1 className="font-[700] text-[32px] text-[#2C2C2C] font-arialBlack">
               {MultimediaLoading ? (
@@ -163,7 +163,7 @@ const Multimedia = () => {
                 ))}
               </div>
             ) : multimediaDetails.length > 0 ? (
-              <div className="mb-[40px]">
+              <div className="mb-[40px] z-10">
                 {renderImages(startIndex, endIndex)}
               </div>
             ) : (

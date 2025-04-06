@@ -53,16 +53,6 @@ const MapHighlights = () => {
     null
   );
 
-  // console.log("selectedDevice", selectedDevice);
-
-   
-  //   selectedDevice &&
-  //   selectedDevice.airReading.reduce((latest, current) => {
-  //     return current.captured > latest.captured ? current : latest;
-  //   }, selectedDevice.airReading[0]);
-
-  // console.log("latestAirReading", latestAirReading);
-
   return (
     <div className="pb-[40px] lg:py-[40px]">
       <div className="flex flex-col gap-[8px] justify-center items-center">
@@ -113,27 +103,62 @@ const MapHighlights = () => {
                       {selectedDevice.location}
                     </h4>
                     <p className="text-sm text-left">
-                      AQI: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.aqi}
+                      AQI:{" "}
+                      {
+                        selectedDevice?.airReading[
+                          selectedDevice?.airReading.length - 1
+                        ]?.aqi
+                      }
                     </p>
                     <p className="text-sm text-left">
-                      PM01_0: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pm01_0}
+                      PM01_0:{" "}
+                      {
+                        selectedDevice?.airReading[
+                          selectedDevice?.airReading.length - 1
+                        ]?.pm01_0
+                      }
                     </p>
 
                     <p className="text-sm text-left">
-                      PM02_5: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pm02_5}
+                      PM02_5:{" "}
+                      {
+                        selectedDevice?.airReading[
+                          selectedDevice?.airReading.length - 1
+                        ]?.pm02_5
+                      }
                     </p>
 
                     <p className="text-sm text-left">
-                      PM10_0: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pm10_0}
+                      PM10_0:{" "}
+                      {
+                        selectedDevice?.airReading[
+                          selectedDevice?.airReading.length - 1
+                        ]?.pm10_0
+                      }
                     </p>
                     <p className="text-sm text-left">
-                      Temperature: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.temperature}
+                      Temperature:{" "}
+                      {
+                        selectedDevice?.airReading[
+                          selectedDevice?.airReading.length - 1
+                        ]?.temperature
+                      }
                     </p>
                     <p className="text-sm text-left">
-                      Pressure: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.pressure}
+                      Pressure:{" "}
+                      {
+                        selectedDevice?.airReading[
+                          selectedDevice?.airReading.length - 1
+                        ]?.pressure
+                      }
                     </p>
                     <p className="text-sm text-left">
-                      Voltage: {selectedDevice?.airReading[(selectedDevice?.airReading.length)- 1]?.voltage}
+                      Voltage:{" "}
+                      {
+                        selectedDevice?.airReading[
+                          selectedDevice?.airReading.length - 1
+                        ]?.voltage
+                      }
                     </p>
                   </div>
                 </InfoWindow>

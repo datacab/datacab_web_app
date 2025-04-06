@@ -39,6 +39,8 @@ const AboutDataCasting = () => {
     loading: isLoading,
     numberOfStates,
   } = useAirMonitoring();
+
+  // console.log("AirMonitoringDetails", AirMonitoringDetails)
   const data = {
     labels: [
       "Jan",
