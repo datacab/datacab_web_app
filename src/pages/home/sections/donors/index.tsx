@@ -1,5 +1,9 @@
 const donorsList = [
   {
+    name: "United Nations Democracy Fund",
+    icon: "/un12.png",
+  },
+  {
     name: "Association For Progressive Communications",
     icon: "/dn1.jpg",
   },
