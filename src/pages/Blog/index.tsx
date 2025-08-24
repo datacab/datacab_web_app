@@ -51,10 +51,10 @@ const Blog = () => {
 
   // console.log("contentDetails", contentDetails);
 
-  const BlogTitle = contentDetails.find((item) => item.title === "Blog")?.title;
+  const BlogTitle = contentDetails.find((item) => item.title === "Environmental News")?.title;
 
   const BlogDesc = contentDetails.find(
-    (item) => item.title === "Blog"
+    (item) => item.title === "Environmental News"
   )?.content;
 
   // console.log("AirReading", {

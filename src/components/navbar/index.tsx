@@ -8,7 +8,7 @@ const navlinks: NavigationTypes[] = [
   { id: 1, title: "Home", link: "/" },
   { id: 2, title: "About", link: "/#about" },
   { id: 3, title: "Multimedia", link: "/multimedia" },
-  { id: 4, title: "Blog", link: "/blog" },
+  { id: 4, title: "News", link: "/blog" },
 ];
 
 const Nav = () => {

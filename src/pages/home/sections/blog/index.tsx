@@ -33,7 +33,7 @@ const EnvironmentalBlog = () => {
           }}
           className="text-[20px] lg:text-[32px] lg:leading-[38px] font-arialBlack"
         >
-          Environmental Blog
+          Environmental News
         </h2>
         {blogDetails && blogDetails.length > 0 && (
           <p
