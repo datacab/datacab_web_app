@@ -41,7 +41,7 @@ const useRequestData = () => {
 
     try {
       const response = await axios.post(
-        "https://datacab-server-8x13.onrender.com/air-monitoring/request-data",
+        "https://api.datacab.io/air-monitoring/request-data",
         requestBody
       );
       if (response.status === 201 || response.data.status === "success") {
