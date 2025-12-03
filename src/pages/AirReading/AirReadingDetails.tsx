@@ -2,30 +2,31 @@ import Container from "@components/container";
 import MainLayout from "@layouts/MainLayout";
 import { Link, useLocation } from "react-router-dom";
 
-import { AiOutlineInfoCircle } from "react-icons/ai";
+// import { AiOutlineInfoCircle } from "react-icons/ai";
 import { Button, DatePicker, Divider, Space } from "antd";
-import { useEffect, useState } from "react";
-import { GaugeComponent } from "react-gauge-component";
-import Select from "@components/select/Select";
-import { MdClose } from "react-icons/md";
-import {
-  ComposedChart,
-  Line,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import moment from "moment";
-import GraphIndicator from "@components/GraphIndicator";
-import MapHighlights from "./map";
+import { useState } from "react";
+// import { GaugeComponent } from "react-gauge-component";
+// import Select from "@components/select/Select";
+// import { MdClose } from "react-icons/md";
+// import {
+//   ComposedChart,
+//   Line,
+//   Area,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   Legend,
+//   ResponsiveContainer,
+// } from "recharts";
+// import moment from "moment";
+// import GraphIndicator from "@components/GraphIndicator";
+// import MapHighlights from "./map";
 import { CSVLink } from "react-csv";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { FlattenedDataType } from "../../types/airMonitoring";
+import { AMD_type_v2, FlattenedDataType } from "../../types/airMonitoring";
 import dayjs, { Dayjs } from "dayjs";
+import IFrame from "@components/IFrame";
 // import { FlattenedDataType } from "../../types/airMonitoring";
 
 const { RangePicker } = DatePicker;
@@ -41,137 +42,156 @@ interface FilterValues {
   date: Dayjs | null;
 }
 
+interface Item {
+  item: AMD_type_v2;
+}
+
 const AirReadingDetails = () => {
   const location = useLocation();
-  const { item } = location.state || {};
-  // console.log(item, " Calling you Ole");
+  const { item }: Item = location.state || {};
+  console.log(item, " Calling you Ole");
 
-  const colorRange = [
-    {
-      color: "/lemon.svg",
-      text: "Good",
-    },
-    {
-      color: "/yello.svg",
-      text: "Moderate",
-    },
-    {
-      color: "/brown.svg",
-      text: "Unhealthy for sensitive groups(USG)",
-    },
-    {
-      color: "/red.svg",
-      text: "Unhealthy",
-    },
-    {
-      color: "/purple.svg",
-      text: "Very unhealthy",
-    },
-    {
-      color: "/blood.svg",
-      text: "Harzadous",
-    },
-  ];
+  // const colorRange = [
+  //   {
+  //     color: "/lemon.svg",
+  //     text: "Good",
+  //   },
+  //   {
+  //     color: "/yello.svg",
+  //     text: "Moderate",
+  //   },
+  //   {
+  //     color: "/brown.svg",
+  //     text: "Unhealthy for sensitive groups(USG)",
+  //   },
+  //   {
+  //     color: "/red.svg",
+  //     text: "Unhealthy",
+  //   },
+  //   {
+  //     color: "/purple.svg",
+  //     text: "Very unhealthy",
+  //   },
+  //   {
+  //     color: "/blood.svg",
+  //     text: "Harzadous",
+  //   },
+  // ];
 
-  const pm = [
-    {
-      text: "PM 1",
-      value: item.airReading.length > 0 ? item.airReading[(item.airReading.length)- 1].pm01_0 : "No data",
-      info: "",
-    },
-    {
-      text: "PM 2.5",
-      value: item.airReading.length > 0 ? item.airReading[(item.airReading.length)- 1].pm02_5 : "No data",
-      info: "",
-    },
-    {
-      text: "PM 10",
-      value: item.airReading.length > 0 ? item.airReading[(item.airReading.length)- 1].pm10_0 : "No data",
-      info: "",
-    },
-  ];
+  // const pm = [
+  //   {
+  //     text: "PM 1",
+  //     value:
+  //       item.airReading.length > 0
+  //         ? item.airReading[item.airReading.length - 1].pm01_0
+  //         : "No data",
+  //     info: "",
+  //   },
+  //   {
+  //     text: "PM 2.5",
+  //     value:
+  //       item.airReading.length > 0
+  //         ? item.airReading[item.airReading.length - 1].pm02_5
+  //         : "No data",
+  //     info: "",
+  //   },
+  //   {
+  //     text: "PM 10",
+  //     value:
+  //       item.airReading.length > 0
+  //         ? item.airReading[item.airReading.length - 1].pm10_0
+  //         : "No data",
+  //     info: "",
+  //   },
+  // ];
 
-  const atmos = [
-    {
-      text: "Humidity",
-      value:
-        item.airReading.length > 0 ? item.airReading[(item.airReading.length)- 1].humidity : "No data",
-      info: "",
-    },
-    {
-      text: "Pressure",
-      value:
-        item.airReading.length > 0 ? item.airReading[(item.airReading.length)- 1].pressure : "No data",
-      info: "",
-    },
-    {
-      text: "Voltage",
-      value:
-        item.airReading.length > 0 ? item.airReading[(item.airReading.length)- 1].voltage : "No data",
-      info: "",
-    },
-  ];
+  // const atmos = [
+  //   {
+  //     text: "Humidity",
+  //     value:
+  //       item.airReading.length > 0
+  //         ? item.airReading[item.airReading.length - 1].humidity
+  //         : "No data",
+  //     info: "",
+  //   },
+  //   {
+  //     text: "Pressure",
+  //     value:
+  //       item.airReading.length > 0
+  //         ? item.airReading[item.airReading.length - 1].pressure
+  //         : "No data",
+  //     info: "",
+  //   },
+  //   {
+  //     text: "Voltage",
+  //     value:
+  //       item.airReading.length > 0
+  //         ? item.airReading[item.airReading.length - 1].voltage
+  //         : "No data",
+  //     info: "",
+  //   },
+  // ];
 
-  const tab_text = [
-    { text: <div>Air&nbsp;Quality&nbsp;Reading</div>, text2: "aq" },
-    { text: <div>PM&nbsp;1</div>, text2: "pm1" },
-    { text: <div>PM&nbsp;2.5</div>, text2: "pm2.5" },
-    { text: <div>PM&nbsp;10</div>, text2: "pm10" },
-  ];
+  // const tab_text = [
+  //   { text: <div>Air&nbsp;Quality&nbsp;Reading</div>, text2: "aq" },
+  //   { text: <div>PM&nbsp;1</div>, text2: "pm1" },
+  //   { text: <div>PM&nbsp;2.5</div>, text2: "pm2.5" },
+  //   { text: <div>PM&nbsp;10</div>, text2: "pm10" },
+  // ];
 
-  const getAQRGrade = (aqrValue: string) => {
-    let text = "";
+  // const getAQRGrade = (aqrValue: string) => {
+  //   let text = "";
 
-    switch (true) {
-      case Number(aqrValue) <= 50:
-        text = "Good";
-        break;
-      case Number(aqrValue) > 50 && Number(aqrValue) <= 100:
-        text = "Moderate";
-        break;
-      case Number(aqrValue) > 100 && Number(aqrValue) <= 150:
-        text = "USG";
-        break;
-      case Number(aqrValue) > 150 && Number(aqrValue) <= 200:
-        text = "Unhealthy";
-        break;
-      case Number(aqrValue) > 200 && Number(aqrValue) <= 300:
-        text = "Very unhealthy";
-        break;
-      case Number(aqrValue) > 300:
-        text = "Harzadous";
-        break;
-      default:
-        text = "No data";
-    }
+  //   switch (true) {
+  //     case Number(aqrValue) <= 50:
+  //       text = "Good";
+  //       break;
+  //     case Number(aqrValue) > 50 && Number(aqrValue) <= 100:
+  //       text = "Moderate";
+  //       break;
+  //     case Number(aqrValue) > 100 && Number(aqrValue) <= 150:
+  //       text = "USG";
+  //       break;
+  //     case Number(aqrValue) > 150 && Number(aqrValue) <= 200:
+  //       text = "Unhealthy";
+  //       break;
+  //     case Number(aqrValue) > 200 && Number(aqrValue) <= 300:
+  //       text = "Very unhealthy";
+  //       break;
+  //     case Number(aqrValue) > 300:
+  //       text = "Harzadous";
+  //       break;
+  //     default:
+  //       text = "No data";
+  //   }
 
-    return text;
-  };
+  //   return text;
+  // };
 
-  const [tab_value, set_tab_value] = useState<string>("aq");
+  // const [tab_value, set_tab_value] = useState<string>("aq");
 
-  const time_line = [
-    {
-      value: "Last 7 days",
-      label: "Last 7 days",
-    },
-    {
-      value: "Last 14 days",
-      label: "Last 14 days",
-    },
-    {
-      value: "Last 1 month",
-      label: "Last 1 month",
-    },
-    {
-      value: "2 months ago",
-      label: "2 months ago",
-    },
-  ];
+  // const time_line = [
+  //   {
+  //     value: "Last 7 days",
+  //     label: "Last 7 days",
+  //   },
+  //   {
+  //     value: "Last 14 days",
+  //     label: "Last 14 days",
+  //   },
+  //   {
+  //     value: "Last 1 month",
+  //     label: "Last 1 month",
+  //   },
+  //   {
+  //     value: "2 months ago",
+  //     label: "2 months ago",
+  //   },
+  // ];
 
   const [csvItems, setCsvItems] = useState<FlattenedDataType[]>([]);
 
-  const [dateRange, setDaysRange] = useState<string | number>("Last 7 days");
+  // const [dateRange, setDaysRange] = useState<string | number>("Last 7 days");
   const [showFilter, setShowFilter] = useState<boolean>(false);
 
   const handleFilterChange = (
@@ -256,102 +276,102 @@ const AirReadingDetails = () => {
 
   // Define headers for CSV
 
-  const [startDate, endDate] = filterValues.dateRange;
-  const singleDate = filterValues.date;
+  // const [startDate, endDate] = filterValues.dateRange;
+  // const singleDate = filterValues.date;
 
-  useEffect(() => {
-    const filterData = (
-      data: any[],
-      startDate?: Dayjs | null,
-      endDate?: Dayjs | null,
-      singleDate?: Dayjs | null
-    ) => {
-      // If no filters are specified, return all data
-      if (!startDate && !endDate && !singleDate) return data;
+  // useEffect(() => {
+  //   const filterData = (
+  //     data: any[],
+  //     startDate?: Dayjs | null,
+  //     endDate?: Dayjs | null,
+  //     singleDate?: Dayjs | null
+  //   ) => {
+  //     // If no filters are specified, return all data
+  //     if (!startDate && !endDate && !singleDate) return data;
 
-      return data.filter((item) => {
-        const itemDate = dayjs(item.readingCreatedAt);
+  //     return data.filter((item) => {
+  //       const itemDate = dayjs(item.readingCreatedAt);
 
-        // Single date filter (exact match)
-        if (singleDate) {
-          return itemDate.isSame(singleDate, "day");
-        }
+  //       // Single date filter (exact match)
+  //       if (singleDate) {
+  //         return itemDate.isSame(singleDate, "day");
+  //       }
 
-        // Date range filter
-        const filterStartDate = startDate || dayjs("-Infinity");
-        const filterEndDate = endDate || dayjs("Infinity");
+  //       // Date range filter
+  //       const filterStartDate = startDate || dayjs("-Infinity");
+  //       const filterEndDate = endDate || dayjs("Infinity");
 
-        // Check if the item's date is within the specified range (inclusive)
-        return (
-          itemDate.isAfter(filterStartDate.subtract(1, "day")) &&
-          itemDate.isBefore(filterEndDate.add(1, "day"))
-        );
-      });
-    };
+  //       // Check if the item's date is within the specified range (inclusive)
+  //       return (
+  //         itemDate.isAfter(filterStartDate.subtract(1, "day")) &&
+  //         itemDate.isBefore(filterEndDate.add(1, "day"))
+  //       );
+  //     });
+  //   };
 
-    const flattenedData = [item].flatMap((item: any) => {
-      // Flatten airReading (previous implementation remains the same)
-      const airReadingsFlattened = item.airReading?.map((air: any) => ({
-        deviceId: item.id,
-        deviceUid: item.device_uid,
-        serialNumber: item.serial_number,
-        location: item.location,
-        latitude: item.lat,
-        longitude: item.lon,
-        createdAt: moment(item.createdAt).format("YYYY-MM-DD"),
-        updatedAt: moment(item.updatedAt).format("YYYY-MM-DD"),
-        readingType: "Air Reading",
-        readingId: air.id,
-        aqi: Number(air.aqi),
-        humidity: Number(air.humidity),
-        pm01_0: Number(air.pm01_0),
-        pm02_5: Number(air.pm02_5),
-        pm10_0: Number(air.pm10_0),
-        pressure: Number(air.pressure),
-        temperature: Number(air.temperature),
-        voltage: Number(air.voltage),
-        captured: Number(air.captured),
-        readingCreatedAt: moment(air.createdAt).format("YYYY-MM-DD"),
-      }));
+  //   const flattenedData = [item].flatMap((item: any) => {
+  //     // Flatten airReading (previous implementation remains the same)
+  //     const airReadingsFlattened = item.airReading?.map((air: any) => ({
+  //       deviceId: item.id,
+  //       deviceUid: item.device_uid,
+  //       serialNumber: item.serial_number,
+  //       location: item.location,
+  //       latitude: item.lat,
+  //       longitude: item.lon,
+  //       createdAt: moment(item.createdAt).format("YYYY-MM-DD"),
+  //       updatedAt: moment(item.updatedAt).format("YYYY-MM-DD"),
+  //       readingType: "Air Reading",
+  //       readingId: air.id,
+  //       aqi: Number(air.aqi),
+  //       humidity: Number(air.humidity),
+  //       pm01_0: Number(air.pm01_0),
+  //       pm02_5: Number(air.pm02_5),
+  //       pm10_0: Number(air.pm10_0),
+  //       pressure: Number(air.pressure),
+  //       temperature: Number(air.temperature),
+  //       voltage: Number(air.voltage),
+  //       captured: Number(air.captured),
+  //       readingCreatedAt: moment(air.createdAt).format("YYYY-MM-DD"),
+  //     }));
 
-      // Flatten histories (previous implementation remains the same)
-      const historiesFlattened = item.histories?.map((history: any) => ({
-        deviceId: item.id,
-        deviceUid: item.device_uid,
-        serialNumber: item.serial_number,
-        location: item.location,
-        latitude: item.lat,
-        longitude: item.lon,
-        createdAt: moment(item.createdAt).format("YYYY-MM-DD"),
-        updatedAt: moment(item.updatedAt).format("YYYY-MM-DD"),
-        readingType: "History",
-        readingId: history.id,
-        aqi: Number(history.aqi),
-        humidity: null,
-        pm01_0: Number(history.pm1_0),
-        pm02_5: Number(history.pm2_5),
-        pm10_0: Number(history.pm10_0),
-        pressure: null,
-        temperature: null,
-        voltage: null,
-        captured: null,
-        readingCreatedAt: moment(history.date).format("YYYY-MM-DD"),
-      }));
+  //     // Flatten histories (previous implementation remains the same)
+  //     const historiesFlattened = item.histories?.map((history: any) => ({
+  //       deviceId: item.id,
+  //       deviceUid: item.device_uid,
+  //       serialNumber: item.serial_number,
+  //       location: item.location,
+  //       latitude: item.lat,
+  //       longitude: item.lon,
+  //       createdAt: moment(item.createdAt).format("YYYY-MM-DD"),
+  //       updatedAt: moment(item.updatedAt).format("YYYY-MM-DD"),
+  //       readingType: "History",
+  //       readingId: history.id,
+  //       aqi: Number(history.aqi),
+  //       humidity: null,
+  //       pm01_0: Number(history.pm1_0),
+  //       pm02_5: Number(history.pm2_5),
+  //       pm10_0: Number(history.pm10_0),
+  //       pressure: null,
+  //       temperature: null,
+  //       voltage: null,
+  //       captured: null,
+  //       readingCreatedAt: moment(history.date).format("YYYY-MM-DD"),
+  //     }));
 
-      // Combine airReadings and histories
-      return [...airReadingsFlattened, ...historiesFlattened];
-    });
+  //     // Combine airReadings and histories
+  //     return [...airReadingsFlattened, ...historiesFlattened];
+  //   });
 
-    // Filter the flattened data
-    const filteredData = filterData(
-      flattenedData,
-      startDate, // Optional start date for range
-      endDate, // Optional end date for range
-      singleDate // Optional single date
-    );
+  //   // Filter the flattened data
+  //   const filteredData = filterData(
+  //     flattenedData,
+  //     startDate, // Optional start date for range
+  //     endDate, // Optional end date for range
+  //     singleDate // Optional single date
+  //   );
 
-    setCsvItems(filteredData);
-  }, [item, startDate, endDate, singleDate]); // Add singleDate to dependency array
+  //   setCsvItems(filteredData);
+  // }, [item, startDate, endDate, singleDate]); // Add singleDate to dependency array
 
   const headers = [
     { label: "Device ID", key: "deviceId" },
@@ -379,28 +399,7 @@ const AirReadingDetails = () => {
   return (
     <MainLayout>
       <Container>
-        <div className="relative flex flex-col lg:flex-row justify-between lg:items-end mt-[20vh] lg:mt-[25vh]">
-          <div className="flex flex-col gap-2 text-[24px] md:text-[32px] font-[700] text-[#2C2C2C] font-arialBlack">
-            <Link to="/air-reading" className="w-[50px]   ">
-              <IoArrowBackOutline size={20} />
-            </Link>
-            Air Quality in {item.serial_number}
-          </div>
-
-          <Button
-            className="h-[46px] w-[30%] lg:w-auto bg-transparent mt-5 lg:mt-0"
-            onClick={() => setShowFilter((value) => !value)}
-            icon={
-              <img
-                src="/download.svg"
-                alt="image"
-                className="w-[17.5px] h-[17.5px] "
-              />
-            }
-          >
-            <div className="text-[16px] font-[400]">Download</div>
-          </Button>
-
+        <div className="relative mt-[20vh] lg:mt-[25vh] bg-amber-100 md:max-w-[980px] w-full mx-auto">
           <div
             className={`absolute top-[180px] w-full h-fit z-[999] px-[25px] bg-white md:top-[150px] ${
               showFilter === true ? "block" : "hidden"
@@ -473,8 +472,37 @@ const AirReadingDetails = () => {
             </div>
           </div>
         </div>
+        <div className="relative h-[120vh] md:h-[130vh] flex flex-col w-full">
+          {/* Title & Buttons */}
+          <div className="flex absolute z-10 bg-[#F5F5F5] h-[260px] md:h-[220px] inset-x-0">
+            <div className="md:max-w-[980px] w-full mx-auto flex flex-col lg:flex-row justify-between lg:items-start">
+              <div className="flex flex-col gap-2 text-[24px] md:text-[32px] font-[700] text-[#2C2C2C] font-arialBlack">
+                <Link to="/air-reading" className="w-[50px]   ">
+                  <IoArrowBackOutline size={20} />
+                </Link>
+                Air Quality in {item.serial_number}
+              </div>
+              <Button
+                className="h-[46px] w-[30%] lg:w-auto bg-transparent mt-5 lg:mt-0 md:self-center"
+                onClick={() => setShowFilter((value) => !value)}
+                icon={
+                  <img
+                    src="/download.svg"
+                    alt="image"
+                    className="w-[17.5px] h-[17.5px] "
+                  />
+                }
+              >
+                <div className="text-[16px] font-[400]">Download</div>
+              </Button>
+            </div>
+          </div>
+          <div className="flex-1">
+            <IFrame item={item} />
+          </div>
+        </div>
 
-        <div className="rounded-[20px] shadow-md w-full p-[20px] lg:p-[40px] mt-[50px]">
+        {/* <div className="rounded-[20px] shadow-md w-full p-[20px] lg:p-[40px] mt-[50px]">
           <div className="text-[16px] font-[700] text-[#2C2C2C]">
             Current reading
           </div>
@@ -741,10 +769,10 @@ const AirReadingDetails = () => {
               <div className="text-[14px] mb-[20px]">PM 1</div>
               <div className="mb-[20px] flex items-center justify-center gap-x-[10px]">
                 <GraphIndicator color="#B3CF9B" text="PM1" />
-                {/* <GraphIndicator
+                <GraphIndicator
               color="#FFECB4"
               text="Charging"
-              /> */}
+              />
               </div>
               <ResponsiveContainer width="100%" height={350}>
                 <ComposedChart
@@ -800,10 +828,10 @@ const AirReadingDetails = () => {
               <div className="text-[14px] mb-[20px]">PM 2.5</div>
               <div className="mb-[20px] flex items-center justify-center gap-x-[10px]">
                 <GraphIndicator color="#73ACC1" text="PM2.5" />
-                {/* <GraphIndicator
+                <GraphIndicator
               color="#FFECB4"
               text="Charging"
-              /> */}
+              />
               </div>
               <ResponsiveContainer width="100%" height={350}>
                 <ComposedChart
@@ -859,10 +887,10 @@ const AirReadingDetails = () => {
               <div className="text-[14px] mb-[20px]">PM 10</div>
               <div className="mb-[20px] flex items-center justify-center gap-x-[10px]">
                 <GraphIndicator color="#F9B8B0" text="PM10" />
-                {/* <GraphIndicator
+                <GraphIndicator
               color="#FFECB4"
               text="Charging"
-              /> */}
+              />
               </div>
               <ResponsiveContainer width="100%" height={350}>
                 <ComposedChart
@@ -986,8 +1014,8 @@ const AirReadingDetails = () => {
               </ResponsiveContainer>
             </div>
           </div>
-        </div>
-        <div className="rounded-[20px] shadow-md w-full p-[20px] lg:p-[40px] mt-[50px]">
+        </div> */}
+        {/* <div className="rounded-[20px] shadow-md w-full p-[20px] lg:p-[40px] mt-[50px]">
           <div className="xl:flex justify-between items-center gap-x-[20px]">
             <div className="text-[18px] text-[700] md:text-[24px] font-[700] mb-[20px] xl:mb-[unset]">
               Air Quality Index Average ({dateRange})
@@ -1222,7 +1250,7 @@ const AirReadingDetails = () => {
               <div className="text-[#1D48E7] text-center">Safecast</div>
             </div>
           </div>
-        </div>
+        </div> */}
       </Container>
     </MainLayout>
   );
