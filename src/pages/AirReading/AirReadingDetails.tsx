@@ -399,7 +399,7 @@ const AirReadingDetails = () => {
   return (
     <MainLayout>
       <Container>
-        <div className="relative mt-[20vh] lg:mt-[25vh] bg-amber-100 md:max-w-[980px] w-full mx-auto">
+        <div className="relative mt-[8vh] md:mt-[16vh] bg-amber-100 md:max-w-[980px] w-full mx-auto">
           <div
             className={`absolute top-[180px] w-full h-fit z-[999] px-[25px] bg-white md:top-[150px] ${
               showFilter === true ? "block" : "hidden"
@@ -474,15 +474,15 @@ const AirReadingDetails = () => {
         </div>
         <div className="relative h-[120vh] md:h-[130vh] flex flex-col w-full">
           {/* Title & Buttons */}
-          <div className="flex absolute z-10 bg-[#F5F5F5] h-[260px] md:h-[220px] inset-x-0">
+          <div className="flex absolute z-10 bg-[#F5F5F5] h-[80px] md:h-[70px] inset-x-0">
             <div className="md:max-w-[980px] w-full mx-auto flex flex-col lg:flex-row justify-between lg:items-start">
-              <div className="flex flex-col gap-2 text-[24px] md:text-[32px] font-[700] text-[#2C2C2C] font-arialBlack">
+              <div className="flex flex-col gap-2 text-[20px] md:text-[32px] font-regular md:font-[700] text-[#2C2C2C] font-arialBlack">
                 <Link to="/air-reading" className="w-[50px]   ">
                   <IoArrowBackOutline size={20} />
                 </Link>
-                Air Quality in {item.serial_number}
+                {/* Air Quality in {item.serial_number} */}
               </div>
-              <Button
+              {/* <Button
                 className="h-[46px] w-[30%] lg:w-auto bg-transparent mt-5 lg:mt-0 md:self-center"
                 onClick={() => setShowFilter((value) => !value)}
                 icon={
@@ -494,7 +494,7 @@ const AirReadingDetails = () => {
                 }
               >
                 <div className="text-[16px] font-[400]">Download</div>
-              </Button>
+              </Button> */}
             </div>
           </div>
           <div className="flex-1">
