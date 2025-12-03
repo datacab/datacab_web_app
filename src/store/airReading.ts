@@ -13,6 +13,7 @@ const useAqtStore = create<amt_data_type>((set) => ({
     {
       id: "",
       device_uid: "",
+      device_url: "",
       serial_number: "",
       location: "",
       lat: 0,
@@ -56,6 +57,7 @@ set_AQI_datas: (state) => set({ AQI_datas: state }),
     {
       id: "",
       device_uid: "",
+      device_url: "",
       serial_number: "",
       location: "",
       lat: 0,

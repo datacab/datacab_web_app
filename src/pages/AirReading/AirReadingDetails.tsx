@@ -25,7 +25,7 @@ import { useState } from "react";
 import { CSVLink } from "react-csv";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { AMD_type_v2, FlattenedDataType } from "../../types/airMonitoring";
-import dayjs, { Dayjs } from "dayjs";
+import  { Dayjs } from "dayjs";
 import IFrame from "@components/IFrame";
 // import { FlattenedDataType } from "../../types/airMonitoring";
 
@@ -189,7 +189,7 @@ const AirReadingDetails = () => {
   //   },
   // ];
 
-  const [csvItems, setCsvItems] = useState<FlattenedDataType[]>([]);
+  const [csvItems] = useState<FlattenedDataType[]>([]);
 
   // const [dateRange, setDaysRange] = useState<string | number>("Last 7 days");
   const [showFilter, setShowFilter] = useState<boolean>(false);
