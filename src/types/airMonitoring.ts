@@ -72,6 +72,7 @@ export interface AMD_type {
 export interface AMD_type_v2 {
   id: string;
   device_uid: string;
+  device_url: string,
   serial_number: string;
   location: string;
   lat: number;

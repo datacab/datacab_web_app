@@ -14,7 +14,6 @@ import MapHighlights from "@pages/home/sections/map";
 import useAirMonitoring from "../../hooks/useAirMonitoring";
 import useContentDetails from "@hooks/useContentDetails";
 
-
 interface SelectOption {
   value: string;
   label: string;
@@ -245,6 +244,7 @@ const AirReading = () => {
   // )
 
   const handleNavigate = (item: AMD_type_v2) => {
+    console.log("Device URL: ", item.device_url);
     navigate(`/air-reading-details/${item.id}`, { state: { item } });
   };
 
@@ -260,7 +260,7 @@ const AirReading = () => {
                 <>
                   <div
                     className="font-[700] text-[32px] text-[#2C2C2C] font-arialBlack"
-                    dangerouslySetInnerHTML={{ __html: AirReadingTitle || '' }}
+                    dangerouslySetInnerHTML={{ __html: AirReadingTitle || "" }}
                   />
                 </>
               )}
@@ -272,7 +272,7 @@ const AirReading = () => {
                 <>
                   <div
                     className="text-[#757575] text-[18px] font-[500]"
-                    dangerouslySetInnerHTML={{ __html: AirReadingDesc || '' }}
+                    dangerouslySetInnerHTML={{ __html: AirReadingDesc || "" }}
                   />
                 </>
               )}
